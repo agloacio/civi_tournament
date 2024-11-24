@@ -2,7 +2,7 @@
 <extension key="tournament" type="module">
   <file>tournament</file>
   <name>Tournament</name>
-  <description>CiviEvent Extension for tournaments</description>
+  <description>CiviEvent Extension for Tournaments</description>
   <license>AGPL-3.0</license>
   <authors>
     <author>
