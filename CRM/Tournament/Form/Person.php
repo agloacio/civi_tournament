@@ -29,26 +29,26 @@ class CRM_Tournament_Form_Person extends CRM_Core_Form {
       $this->setTitle(ts('New %1', [1 => $typeLabel]));
       $session->pushUserContext(CRM_Utils_System::url('civicrm/dashboard', 'reset=1'));
     } else {
-      $contactId = $this->getContactID();
+      $personId = $this->getContactID();
 
       $people = \Civi\Api4\Individual::get(TRUE)
-        ->addSelect('first_name', 'middle_name', 'last_name', 'birth_date', 'gender_id') //, 'prefix_id:label', 'suffix_id:label', 'gender_id:label')
-        ->addWhere('id', '=', $contactId)
+        ->addSelect('first_name', 'middle_name', 'last_name', 'birth_date', 'gender_id', 'prefix_id', 'suffix_id')
+        ->addWhere('id', '=', $personId)
         ->setLimit(1)
         ->execute();
 
-      $this->person = $people[0];
-
       // Check if person was found
       if (!$people) {
-        CRM_Core_Error::statusBounce(ts("Could not find person with id = $contactId"));
+        CRM_Core_Error::statusBounce(ts("Could not find person with id = $personId"));
       }
+
+      $this->person = $people[0];
 
       if (empty($this->person['id'])) {
-        CRM_Core_Error::statusBounce(ts('A person with that ID does not exist: %1', [1 => $contactId]));
+        CRM_Core_Error::statusBounce(ts("Could not find person with id = $personId"));
       }
 
-      if (!CRM_Core_Permission::check('Contact', $contactId, 'edit')) {
+      if (!CRM_Core_Permission::check('Contact', $personId, 'edit')) {
         CRM_Utils_System::permissionDenied();
         CRM_Utils_System::civiExit();
       }
@@ -64,9 +64,6 @@ class CRM_Tournament_Form_Person extends CRM_Core_Form {
     $this->addField('last_name', ['placeholder' => ts('Last Name'), 'label' => ts('Last Name')], true);
     $this->addField('first_name', ['placeholder' => ts('First Name'), 'label' => ts('First Name')], true);
     $this->addField('middle_name', ['placeholder' => ts('Middle Name'), 'label' => ts('Middle Name')]);
-    // $this->addField('birth_date', ['placeholder' => ts('Birth Date'), 'label' => ts('Birth Date')], false, false);
-    // $this->addField('gender_id', ['placeholder' => ts('Gender'), 'label' => ts('Gender')]);
-
 
     $this->addField('gender_id', ['entity' => 'contact', 'type' => 'Radio', 'allowClear' => TRUE]);
 
@@ -93,7 +90,7 @@ class CRM_Tournament_Form_Person extends CRM_Core_Form {
   public function postProcess() {
     $this->person = $this->exportValues();
 
-    $results = \Civi\Api4\Individual::update(FALSE)
+    \Civi\Api4\Individual::update(FALSE)
       ->addValue('first_name', $this->person['first_name'])
       ->addValue('middle_name', $this->person['middle_name'])
       ->addValue('last_name', $this->person['last_name'])
@@ -105,7 +102,8 @@ class CRM_Tournament_Form_Person extends CRM_Core_Form {
       ->execute();
 
     $session = CRM_Core_Session::singleton();
-    $session->setStatus($message, ts('Person Saved'), 'success');
+    $message = ts('Person Saved');
+    $session->setStatus($message, $message, 'success');
 
     $this->updateTitle();
 
@@ -139,7 +137,7 @@ class CRM_Tournament_Form_Person extends CRM_Core_Form {
    */
   public function getDefaultContext(): string
   {
-    return 'update';
+    return 'create';
   }
 
   /**
