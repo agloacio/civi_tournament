@@ -9,6 +9,8 @@ use CRM_Tournament_ExtensionUtil as E;
  */
 class CRM_Tournament_Form_Person extends CRM_Core_Form {
   private $person = null;
+  private $_values;
+
   public function preProcess()
   {
     $this->_action = CRM_Utils_Request::retrieve('action', 'String', $this, FALSE, 'update');
@@ -105,7 +107,7 @@ class CRM_Tournament_Form_Person extends CRM_Core_Form {
       ->execute();
 
     $session = CRM_Core_Session::singleton();
-    $session->setStatus($message, ts('Person Saved'), 'success');
+    $session->setStatus(ts('Person Saved'), ts('Person Saved'), 'success');
 
     $this->updateTitle();
 
@@ -139,7 +141,7 @@ class CRM_Tournament_Form_Person extends CRM_Core_Form {
    */
   public function getDefaultContext(): string
   {
-    return 'update';
+    return 'create';
   }
 
   /**
