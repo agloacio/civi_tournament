@@ -1,5 +1,5 @@
 <?php
-
+require_once "Form.php";
 use CRM_Tournament_ExtensionUtil as E;
 
 /**
@@ -7,15 +7,26 @@ use CRM_Tournament_ExtensionUtil as E;
  *
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  */
-class CRM_Tournament_Form_Person extends CRM_Core_Form {
-  private $person = null;
+class CRM_Tournament_Form_Person extends Tournament_Core_Form {
+  public function __construct(
+    $state,
+    $action,
+    $method,
+    $name
+  ) {
+    parent::__construct(
+      $state,
+      $action,
+      $method,
+      $name
+    );
+
+    $this->_fieldNames = array('first_name', 'middle_name', 'last_name', 'birth_date', 'gender_id', 'prefix_id', 'suffix_id');
+  }
+
   public function preProcess()
   {
-    $this->_action = CRM_Utils_Request::retrieve('action', 'String', $this, FALSE, 'update');
-
     parent::preProcess();
-
-    $session = CRM_Core_Session::singleton();
 
     if ($this->_action == CRM_Core_Action::ADD) {
       // check for add contacts permissions
@@ -24,58 +35,41 @@ class CRM_Tournament_Form_Person extends CRM_Core_Form {
         CRM_Utils_System::civiExit();
       }
 
-      $typeLabel = 'Person';
+      $this->setTitle(ts('New %1', [1 => $this->_name]));
 
-      $this->setTitle(ts('New %1', [1 => $typeLabel]));
+      $session = CRM_Core_Session::singleton();
       $session->pushUserContext(CRM_Utils_System::url('civicrm/dashboard', 'reset=1'));
-    } else {
-      $personId = $this->getContactID();
-
-      $people = \Civi\Api4\Individual::get(TRUE)
-        ->addSelect('first_name', 'middle_name', 'last_name', 'birth_date', 'gender_id', 'prefix_id', 'suffix_id')
-        ->addWhere('id', '=', $personId)
-        ->setLimit(1)
-        ->execute();
-
-      // Check if person was found
-      if (!$people) {
-        CRM_Core_Error::statusBounce(ts("Could not find person with id = $personId"));
-      }
-
-      $this->person = $people[0];
-
-      if (empty($this->person['id'])) {
-        CRM_Core_Error::statusBounce(ts("Could not find person with id = $personId"));
-      }
-
-      if (!CRM_Core_Permission::check('Contact', $personId, 'edit')) {
-        CRM_Utils_System::permissionDenied();
-        CRM_Utils_System::civiExit();
-      }
-      $this->_values = $this->person;
-
-      $this->updateTitle();
+    } else if ($this->_action == CRM_Core_Action::UPDATE) {
+      $this->update();
     }
+  }
+
+  protected function getGetSingleRecordAction(){
+    $this->_id = $this->getContactID();
+    return \Civi\Api4\Individual::get(TRUE)
+      ->addWhere('id', '=', $this->_id)
+      ->setLimit(1);
   }
 
   public function buildQuickForm() {
     $this->applyFilter('__ALL__', 'trim');
+    $entity = $this->getDefaultEntity();
 
     $this->addField('last_name', ['placeholder' => ts('Last Name'), 'label' => ts('Last Name')], true);
     $this->addField('first_name', ['placeholder' => ts('First Name'), 'label' => ts('First Name')], true);
     $this->addField('middle_name', ['placeholder' => ts('Middle Name'), 'label' => ts('Middle Name')]);
 
-    $this->addField('gender_id', ['entity' => 'contact', 'type' => 'Radio', 'allowClear' => TRUE]);
+    $this->addField('gender_id', ['entity' => $entity, 'type' => 'Radio', 'allowClear' => TRUE]);
 
-    $this->addField('birth_date', ['entity' => 'contact'], FALSE, FALSE);
+    $this->addField('birth_date', ['entity' => $entity], FALSE, FALSE);
 
-    $this->addField('prefix_id', ['entity' => 'contact', 'placeholder' => ts('Prefix'), 'label' => ts('Prefix')]);
-    $this->addField('suffix_id', ['entity' => 'contact', 'placeholder' => ts('Suffix'), 'label' => ts('Suffix')]);
+    $this->addField('prefix_id', ['entity' => $entity, 'placeholder' => ts('Prefix'), 'label' => ts('Prefix')]);
+    $this->addField('suffix_id', ['entity' => $entity, 'placeholder' => ts('Suffix'), 'label' => ts('Suffix')]);
 
     $this->addButtons(array(
       array(
         'type' => 'submit',
-        'name' => E::ts('Submit'),
+        'name' => E::ts('Save'),
         'isDefault' => TRUE,
       ),
     ));
@@ -88,22 +82,21 @@ class CRM_Tournament_Form_Person extends CRM_Core_Form {
   }
 
   public function postProcess() {
-    $this->person = $this->exportValues();
+    $this->_values = $this->exportValues();
 
     \Civi\Api4\Individual::update(FALSE)
-      ->addValue('first_name', $this->person['first_name'])
-      ->addValue('middle_name', $this->person['middle_name'])
-      ->addValue('last_name', $this->person['last_name'])
-      ->addValue('birth_date', $this->person['birth_date'])
-      ->addValue('gender_id', $this->person['gender_id'])
-      ->addValue('prefix_id', $this->person['prefix_id'])
-      ->addValue('suffix_id', $this->person['suffix_id'])
+      ->addValue('first_name', $this->_values['first_name'])
+      ->addValue('middle_name', $this->_values['middle_name'])
+      ->addValue('last_name', $this->_values['last_name'])
+      ->addValue('birth_date', $this->_values['birth_date'])
+      ->addValue('gender_id', $this->_values['gender_id'])
+      ->addValue('prefix_id', $this->_values['prefix_id'])
+      ->addValue('suffix_id', $this->_values['suffix_id'])
       ->addWhere('id', '=', $this->getContactID())
       ->execute();
 
     $session = CRM_Core_Session::singleton();
-    $message = ts('Person Saved');
-    $session->setStatus($message, $message, 'success');
+    $session->setStatus($this->displayName(), "$this->_name Saved", 'success');
 
     $this->updateTitle();
 
@@ -159,10 +152,14 @@ class CRM_Tournament_Form_Person extends CRM_Core_Form {
     return $defaults;
   }
 
-  private function updateTitle(){     
-    $displayName = $this->person['first_name'] . ' ' . $this->person['last_name'];
-    $title = ts('Edit %1', [1 => $displayName]);
+  protected function updateTitle(){     
+    $displayName = 
+    $title = ts('Edit %1', [1 => $this->displayName()]);
     $this->setTitle($title);
+  }
+
+  private function displayName(){
+    return $this->_values['first_name'] . ' ' . $this->_values['last_name'];
   }
 
 }
