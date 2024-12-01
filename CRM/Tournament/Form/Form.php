@@ -42,7 +42,8 @@ class Tournament_Core_Form extends CRM_Core_Form
       CRM_Core_Error::statusBounce(ts("Could not find $this->_name with id = $this->_id"));
     }
 
-    if (!CRM_Core_Permission::check($this->getDefaultEntity(), $this->_id, 'edit')) {
+
+    if (!CRM_Core_Permission::check("edit " . $this->getDefaultEntity() . "s", $this->_id)) {
       CRM_Utils_System::permissionDenied();
       CRM_Utils_System::civiExit();
     }

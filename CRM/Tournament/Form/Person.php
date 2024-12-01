@@ -8,18 +8,9 @@ use CRM_Tournament_ExtensionUtil as E;
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  */
 class CRM_Tournament_Form_Person extends Tournament_Core_Form {
-  public function __construct(
-    $state,
-    $action,
-    $method,
-    $name
-  ) {
-    parent::__construct(
-      $state,
-      $action,
-      $method,
-      $name
-    );
+  public function __construct($state, $action, $method, $name)
+  {
+    parent::__construct($state, $action, $method, $name);
 
     $this->_fieldNames = array('first_name', 'middle_name', 'last_name', 'birth_date', 'gender_id', 'prefix_id', 'suffix_id');
   }
