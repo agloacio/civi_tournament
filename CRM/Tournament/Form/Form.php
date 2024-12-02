@@ -15,7 +15,7 @@ class Tournament_Core_Form extends CRM_Core_Form
 {
   protected $_values;
   protected $_id;
-  protected $_fieldNames;
+  protected $_fields;
   protected $_recordName;
   protected $_updateAction;
 
@@ -50,8 +50,8 @@ class Tournament_Core_Form extends CRM_Core_Form
 
   public function postProcess()
   {
-    foreach ($this->_fieldNames as $fieldName) {
-      $this->_updateAction->addValue($fieldName, $this->_values[$fieldName]);
+    foreach ($this->_fields as $field) {
+      $this->_updateAction->addValue($field->_name, $this->_values[$field->_name]);
     }
 
     $this->_updateAction->execute();
@@ -102,8 +102,8 @@ class Tournament_Core_Form extends CRM_Core_Form
   {
     $getAction = $this->getGetSingleRecordAction();
 
-    foreach ($this->_fieldNames as &$fieldName) {
-      $getAction = $getAction->addSelect($fieldName);
+    foreach ($this->_fields as &$field) {
+      $getAction = $getAction->addSelect($field->_name);
     }
 
     $result = $getAction->execute();

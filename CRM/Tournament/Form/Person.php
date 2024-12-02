@@ -1,33 +1,35 @@
 <?php
 require_once "Form.php";
+require_once "Field.php";
 
 class CRM_Tournament_Form_Person extends Tournament_Core_Form {
   public function __construct($state, $action, $method, $name)
   {
     parent::__construct($state, $action, $method, $name);
-    $this->_fieldNames = array('first_name', 'middle_name', 'last_name', 'birth_date', 'gender_id', 'prefix_id', 'suffix_id');
+
+    $entity = $this->getDefaultEntity();
+    $this->_fields = array(
+      new Field($entity, 'last_name', 'Last Name', 'Text', TRUE),
+      new Field($entity, 'first_name', 'First Name', 'Text', TRUE),
+      new Field($entity, 'middle_name', 'Middle Name', 'Text', FALSE),
+      new Field($entity, 'gender_id', 'Gender', 'Radio', FALSE),
+      new Field($entity, 'birth_date', 'Birth Date', 'Select Date', FALSE),
+      new Field($entity, 'prefix_id', 'Prefix', 'Select', FALSE),
+      new Field($entity, 'suffix_id', 'Suffix', 'Select', FALSE)
+    );
   }
 
-  protected function getGetSingleRecordAction(){
-    $this->_id = $this->getContactID();
-    return \Civi\Api4\Individual::get(TRUE)
-      ->addWhere('id', '=', $this->_id)
-      ->setLimit(1);
+  public function preProcess()
+  {
+    parent::preProcess();
   }
 
   public function buildQuickForm() {
-    $entity = $this->getDefaultEntity();
+    $legacyDate = FALSE;
 
-    $this->addField('last_name', ['placeholder' => ts('Last Name'), 'label' => ts('Last Name')], true);
-    $this->addField('first_name', ['placeholder' => ts('First Name'), 'label' => ts('First Name')], true);
-    $this->addField('middle_name', ['placeholder' => ts('Middle Name'), 'label' => ts('Middle Name')]);
-
-    $this->addField('gender_id', ['entity' => $entity, 'type' => 'Radio', 'allowClear' => TRUE]);
-
-    $this->addField('birth_date', ['entity' => $entity], FALSE, FALSE);
-
-    $this->addField('prefix_id', ['entity' => $entity, 'placeholder' => ts('Prefix'), 'label' => ts('Prefix')]);
-    $this->addField('suffix_id', ['entity' => $entity, 'placeholder' => ts('Suffix'), 'label' => ts('Suffix')]);
+    foreach ($this->_fields as $field) {
+      $this->addField($field->_name, $field->_props, $field->_required, $legacyDate);
+    }
 
     parent::buildQuickForm();
   }
@@ -39,12 +41,17 @@ class CRM_Tournament_Form_Person extends Tournament_Core_Form {
     parent::postProcess();
   }
 
-  /**
-   * Explicitly declare the entity api name.
-   */
   public function getDefaultEntity()
   {
     return 'contact';
+  }
+
+  protected function getGetSingleRecordAction()
+  {
+    $this->_id = $this->getContactID();
+    return \Civi\Api4\Individual::get(TRUE)
+      ->addWhere('id', '=', $this->_id)
+      ->setLimit(1);
   }
 
   private function displayName(){
