@@ -22,24 +22,28 @@ class Tournament_Core_Form extends CRM_Core_Form
   public function preProcess()
   {
     parent::preProcess();
+    $this->initializeAction();
 
-    $this->_action = CRM_Utils_Request::retrieve('action', 'String', $this, FALSE, 'update');
-
-    if ($this->_action == CRM_Core_Action::ADD) {
+    if ($this->isNewRecord()) {
       $this->addRecord();
-    } else if ($this->_action == CRM_Core_Action::UPDATE) {
+    } else if ($this->needsUpdate()) {
       $this->updateRecord();
-    }
- 
+    } 
   }
 
   public function buildQuickForm()
   {
+    $legacyDate = FALSE;
+
+    foreach ($this->_fields as $field) {
+      $this->addField($field->_name, $field->_props, $field->_required, $legacyDate);
+    }
+
     $this->applyFilter('__ALL__', 'trim');
     $this->addButtons(array(
       array(
         'type' => 'submit',
-        'name' => E::ts('Save'),
+        'name' => ts('Save'),
         'isDefault' => TRUE,
       ),
     ));
@@ -89,7 +93,6 @@ class Tournament_Core_Form extends CRM_Core_Form
     // the 'label'.
     $elementNames = array();
     foreach ($this->_elements as $element) {
-      /** @var HTML_QuickForm_Element $element */
       $label = $element->getLabel();
       if (!empty($label)) {
         $elementNames[] = $element->getName();
@@ -144,5 +147,19 @@ class Tournament_Core_Form extends CRM_Core_Form
 
     $session = CRM_Core_Session::singleton();
     $session->pushUserContext(CRM_Utils_System::url('civicrm/dashboard', 'reset=1'));
+  }
+
+  private function initializeAction()
+  {
+    $this->_action = CRM_Utils_Request::retrieve('action', 'String', $this, FALSE, 'update');
+  }
+
+  private function isNewRecord() {
+    return $this->_action == CRM_Core_Action::ADD;
+  }
+
+  private function needsUpdate()
+  {
+    return $this->_action == CRM_Core_Action::UPDATE;
   }
 }

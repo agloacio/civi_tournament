@@ -1,8 +1,11 @@
 <?php
+
+use \Civi\Api4\Individual as Api;
 require_once "Form.php";
 require_once "Field.php";
 
-class CRM_Tournament_Form_Person extends Tournament_Core_Form {
+class CRM_Tournament_Form_Person extends Tournament_Core_Form
+{
   public function __construct($state, $action, $method, $name)
   {
     parent::__construct($state, $action, $method, $name);
@@ -25,19 +28,13 @@ class CRM_Tournament_Form_Person extends Tournament_Core_Form {
   }
 
   public function buildQuickForm() {
-    $legacyDate = FALSE;
-
-    foreach ($this->_fields as $field) {
-      $this->addField($field->_name, $field->_props, $field->_required, $legacyDate);
-    }
-
     parent::buildQuickForm();
   }
 
   public function postProcess() {
     $this->_values = $this->exportValues();
     $this->_recordName = $this->displayName();
-    $this->_updateAction = \Civi\Api4\Individual::update(FALSE)->addWhere('id', '=', $this->_id);
+    $this->_updateAction = Api::update(FALSE)->addWhere('id', '=', $this->_id);
     parent::postProcess();
   }
 
@@ -49,7 +46,7 @@ class CRM_Tournament_Form_Person extends Tournament_Core_Form {
   protected function getGetSingleRecordAction()
   {
     $this->_id = $this->getContactID();
-    return \Civi\Api4\Individual::get(TRUE)
+    return Api::get(TRUE)
       ->addWhere('id', '=', $this->_id)
       ->setLimit(1);
   }
