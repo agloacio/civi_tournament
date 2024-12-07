@@ -1,16 +1,14 @@
 <?php
-use Civi\Api4\Contact;
 
-/**
- * User short summary.
- *
- * User description.
- *
- * @version 1.0
- * @author msteigerwald
- */
+use \Civi\Api4\Individual as Api;
+
 class User
 {
   public $_name;
   public $_contactUrl;
+  
+  public function __construct($id){
+    if (empty($id)){
+      $id = get
+  }
 }

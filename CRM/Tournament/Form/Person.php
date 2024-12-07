@@ -3,6 +3,7 @@
 use \Civi\Api4\Individual as Api;
 require_once "Form.php";
 require_once "Field.php";
+require_once "CRM/Tournament/Session.php";
 
 class CRM_Tournament_Form_Person extends Tournament_Core_Form
 {
@@ -45,7 +46,7 @@ class CRM_Tournament_Form_Person extends Tournament_Core_Form
 
   protected function getGetSingleRecordAction()
   {
-    $this->_id = $this->getContactID();
+    $this->_id = Session::getLoggedInContactID();
     return Api::get(TRUE)
       ->addWhere('id', '=', $this->_id)
       ->setLimit(1);
