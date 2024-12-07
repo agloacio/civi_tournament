@@ -11,5 +11,6 @@ use Civi\Api4\Contact;
  */
 class User
 {
-  public $_contact; 
+  public $_name;
+  public $_contactUrl;
 }
