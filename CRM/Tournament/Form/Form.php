@@ -1,14 +1,5 @@
 <?php
 
-/**
- * Form short summary.
- *
- * Form description.
- *
- * @version 1.0
- * @author msteigerwald
- */
-
 use CRM_Tournament_ExtensionUtil as E;
   
 class Tournament_Core_Form extends CRM_Core_Form
@@ -25,9 +16,9 @@ class Tournament_Core_Form extends CRM_Core_Form
     $this->initializeAction();
 
     if ($this->isNewRecord()) {
-      $this->addRecord();
+      $this->startNewRecord();
     } else if ($this->needsUpdate()) {
-      $this->updateRecord();
+      $this->reloadExistingRecord();
     } 
   }
 
@@ -101,9 +92,9 @@ class Tournament_Core_Form extends CRM_Core_Form
     return $elementNames;
   }
 
-  protected function updateRecord()
+  protected function reloadExistingRecord()
   {
-    $getAction = $this->getGetSingleRecordAction();
+    $getAction = $this->initializeGetSingleRecordAction();
 
     foreach ($this->_fields as &$field) {
       $getAction = $getAction->addSelect($field->_name);
@@ -135,7 +126,7 @@ class Tournament_Core_Form extends CRM_Core_Form
     $this->setTitle(ts('Edit %1', [1 => $this->_recordName]));
   }
 
-  protected function addRecord()
+  protected function startNewRecord()
   {
     // check for add contacts permissions
     if (!CRM_Core_Permission::check('add ' . $this->getDefaultEntity() . 's')) {

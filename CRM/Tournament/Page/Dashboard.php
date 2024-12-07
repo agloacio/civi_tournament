@@ -9,7 +9,6 @@ class CRM_Tournament_Page_Dashboard extends CRM_Core_Page
 
   public function run()
   {
-
     $user = new User();
     $user->_name = 'Mike';
     $user->_contactUrl = 'http://localhost:45875/wp-admin/admin.php?page=CiviCRM&q=civicrm%2Fperson';
@@ -17,5 +16,4 @@ class CRM_Tournament_Page_Dashboard extends CRM_Core_Page
 
     parent::run();
   }
-
 }

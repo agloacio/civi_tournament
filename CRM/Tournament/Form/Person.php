@@ -4,6 +4,7 @@ use \Civi\Api4\Individual as Api;
 require_once "Form.php";
 require_once "Field.php";
 require_once "CRM/Tournament/Session.php";
+require_once "CRM/Tournament/PersistenceLayer.php";
 
 class CRM_Tournament_Form_Person extends Tournament_Core_Form
 {
@@ -25,6 +26,7 @@ class CRM_Tournament_Form_Person extends Tournament_Core_Form
 
   public function preProcess()
   {
+    $this->_id = CRM_Utils_Request::retrieve('cid', 'Positive');
     parent::preProcess();
   }
 
@@ -44,12 +46,11 @@ class CRM_Tournament_Form_Person extends Tournament_Core_Form
     return 'contact';
   }
 
-  protected function getGetSingleRecordAction()
+  protected function initializeGetSingleRecordAction()
   {
-    $this->_id = Session::getLoggedInContactID();
-    return Api::get(TRUE)
-      ->addWhere('id', '=', $this->_id)
-      ->setLimit(1);
+    $this->_id = $this->_id ?? Session::getLoggedInContactID();
+    $person = new Person($this->_id);
+    return PersistenceLayer::initializeGetSingleRecordAction($this->_id);
   }
 
   private function displayName(){
