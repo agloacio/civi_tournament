@@ -6,10 +6,10 @@
  * The ExtensionUtil class provides small stubs for accessing resources of this
  * extension.
  */
-class CRM_Tournament_ExtensionUtil {
-  const SHORT_NAME = 'tournament';
-  const LONG_NAME = 'tournament';
-  const CLASS_PREFIX = 'CRM_Tournament';
+class CRM_CiviTournament_ExtensionUtil {
+  const SHORT_NAME = 'civi_tournament';
+  const LONG_NAME = 'civi_tournament';
+  const CLASS_PREFIX = 'CRM_CiviTournament';
 
   /**
    * Translate a string using the extension's domain.
@@ -78,14 +78,14 @@ class CRM_Tournament_ExtensionUtil {
 
 }
 
-use CRM_Tournament_ExtensionUtil as E;
+use CRM_CiviTournament_ExtensionUtil as E;
 
 /**
  * (Delegated) Implements hook_civicrm_config().
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_config
  */
-function _tournament_civix_civicrm_config($config = NULL) {
+function _civi_tournament_civix_civicrm_config($config = NULL) {
   static $configured = FALSE;
   if ($configured) {
     return;
@@ -103,8 +103,8 @@ function _tournament_civix_civicrm_config($config = NULL) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_install
  */
-function _tournament_civix_civicrm_install() {
-  _tournament_civix_civicrm_config();
+function _civi_tournament_civix_civicrm_install() {
+  _civi_tournament_civix_civicrm_config();
   // Based on <compatibility>, this does not currently require mixin/polyfill.php.
 }
 
@@ -113,8 +113,8 @@ function _tournament_civix_civicrm_install() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
  */
-function _tournament_civix_civicrm_enable(): void {
-  _tournament_civix_civicrm_config();
+function _civi_tournament_civix_civicrm_enable(): void {
+  _civi_tournament_civix_civicrm_config();
   // Based on <compatibility>, this does not currently require mixin/polyfill.php.
 }
 
@@ -129,7 +129,7 @@ function _tournament_civix_civicrm_enable(): void {
  *
  * @return bool
  */
-function _tournament_civix_insert_navigation_menu(&$menu, $path, $item) {
+function _civi_tournament_civix_insert_navigation_menu(&$menu, $path, $item) {
   // If we are done going down the path, insert menu
   if (empty($path)) {
     $menu[] = [
@@ -150,7 +150,7 @@ function _tournament_civix_insert_navigation_menu(&$menu, $path, $item) {
         if (!isset($entry['child'])) {
           $entry['child'] = [];
         }
-        $found = _tournament_civix_insert_navigation_menu($entry['child'], implode('/', $path), $item);
+        $found = _civi_tournament_civix_insert_navigation_menu($entry['child'], implode('/', $path), $item);
       }
     }
     return $found;
@@ -160,9 +160,9 @@ function _tournament_civix_insert_navigation_menu(&$menu, $path, $item) {
 /**
  * (Delegated) Implements hook_civicrm_navigationMenu().
  */
-function _tournament_civix_navigationMenu(&$nodes) {
+function _civi_tournament_civix_navigationMenu(&$nodes) {
   if (!is_callable(['CRM_Core_BAO_Navigation', 'fixNavigationMenu'])) {
-    _tournament_civix_fixNavigationMenu($nodes);
+    _civi_tournament_civix_fixNavigationMenu($nodes);
   }
 }
 
@@ -170,17 +170,17 @@ function _tournament_civix_navigationMenu(&$nodes) {
  * Given a navigation menu, generate navIDs for any items which are
  * missing them.
  */
-function _tournament_civix_fixNavigationMenu(&$nodes) {
+function _civi_tournament_civix_fixNavigationMenu(&$nodes) {
   $maxNavID = 1;
   array_walk_recursive($nodes, function($item, $key) use (&$maxNavID) {
     if ($key === 'navID') {
       $maxNavID = max($maxNavID, $item);
     }
   });
-  _tournament_civix_fixNavigationMenuItems($nodes, $maxNavID, NULL);
+  _civi_tournament_civix_fixNavigationMenuItems($nodes, $maxNavID, NULL);
 }
 
-function _tournament_civix_fixNavigationMenuItems(&$nodes, &$maxNavID, $parentID) {
+function _civi_tournament_civix_fixNavigationMenuItems(&$nodes, &$maxNavID, $parentID) {
   $origKeys = array_keys($nodes);
   foreach ($origKeys as $origKey) {
     if (!isset($nodes[$origKey]['attributes']['parentID']) && $parentID !== NULL) {
@@ -195,7 +195,7 @@ function _tournament_civix_fixNavigationMenuItems(&$nodes, &$maxNavID, $parentID
       $origKey = $newKey;
     }
     if (isset($nodes[$origKey]['child']) && is_array($nodes[$origKey]['child'])) {
-      _tournament_civix_fixNavigationMenuItems($nodes[$origKey]['child'], $maxNavID, $nodes[$origKey]['attributes']['navID']);
+      _civi_tournament_civix_fixNavigationMenuItems($nodes[$origKey]['child'], $maxNavID, $nodes[$origKey]['attributes']['navID']);
     }
   }
 }
