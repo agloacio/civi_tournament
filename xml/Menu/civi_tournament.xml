@@ -2,13 +2,13 @@
 <menu>
   <item>
     <path>civicrm/tournament</path>
-    <page_callback>CRM_Tournament_Page_Dashboard</page_callback>
+    <page_callback>CRM_CiviTournament_Page_Dashboard</page_callback>
     <title>Dashboard</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/person</path>
-    <page_callback>CRM_Tournament_Form_Person</page_callback>
+    <path>civicrm/tournament/person</path>
+    <page_callback>CRM_CiviTournament_Form_Person</page_callback>
     <title>Person</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
