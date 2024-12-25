@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Form.php';
 use CRM_CiviTournament_ExtensionUtil as E;
 
 /**
@@ -7,7 +8,7 @@ use CRM_CiviTournament_ExtensionUtil as E;
  *
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  */
-class CRM_CiviTournament_Form_Person extends CRM_Core_Form {
+class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form {
 
   /**
    * @throws \CRM_Core_Exception
