@@ -1,18 +1,18 @@
 <?php
 use CRM_CiviTournament_ExtensionUtil as E;
 
+require_once "CRM/CiviTournament/User.php";
 
-//    CRM_CiviTournament_Page_Dashboard
-class CRM_CiviTournament_Page_Dashboard extends CRM_Core_Page {
+class CRM_CiviTournament_Page_Dashboard extends CRM_Core_Page
+{
 
-  public function run() {
-    // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
-    CRM_Utils_System::setTitle(E::ts('Dashboard'));
-
-    // Example: Assign a variable for use in a template
-    $this->assign('currentTime', date('Y-m-d H:i:s'));
+  public function run()
+  {
+    $user = new User();
+    $user->_name = 'Mike';
+    $user->_contactUrl = 'http://localhost:45875/wp-admin/admin.php?page=CiviCRM&q=civicrm/tournament/person';
+    $this->assign('user', $user);
 
     parent::run();
   }
-
 }
