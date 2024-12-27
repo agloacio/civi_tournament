@@ -1,83 +1,65 @@
 <?php
+require_once "Form.php";
+require_once "Field.php";
+require_once "CRM/CiviTournament/Session.php";
 
-require_once 'Form.php';
-use CRM_CiviTournament_ExtensionUtil as E;
+use \Civi\Api4\Individual as Api;
 
 /**
  * Form controller class
  *
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  */
-class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form {
+class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form 
+{
+  public function __construct($state, $action, $method, $name)
+  {
+    parent::__construct($state, $action, $method, $name);
 
-  /**
-   * @throws \CRM_Core_Exception
-   */
-  public function buildQuickForm(): void {
-
-    // add form elements
-    $this->add(
-      'select', // field type
-      'favorite_color', // field name
-      'Favorite Color', // field label
-      $this->getColorOptions(), // list of options
-      TRUE // is required
+    $entity = $this->getDefaultEntity();
+    $this->_fields = array(
+      new Field($entity, 'last_name', 'Last Name', 'Text', TRUE),
+      new Field($entity, 'first_name', 'First Name', 'Text', TRUE),
+      new Field($entity, 'middle_name', 'Middle Name', 'Text', FALSE),
+      new Field($entity, 'gender_id', 'Gender', 'Radio', FALSE),
+      new Field($entity, 'birth_date', 'Birth Date', 'Select Date', FALSE),
+      new Field($entity, 'prefix_id', 'Prefix', 'Select', FALSE),
+      new Field($entity, 'suffix_id', 'Suffix', 'Select', FALSE)
     );
-    $this->addButtons([
-      [
-        'type' => 'submit',
-        'name' => E::ts('Submit'),
-        'isDefault' => TRUE,
-      ],
-    ]);
+  }
 
-    // export form elements
-    $this->assign('elementNames', $this->getRenderableElementNames());
+  public function preProcess()
+  {
+    $this->_id = CRM_Utils_Request::retrieve('cid', 'Positive');
+    parent::preProcess();
+  }
+
+  public function buildQuickForm() {
     parent::buildQuickForm();
   }
 
-  public function postProcess(): void {
-    $values = $this->exportValues();
-    $options = $this->getColorOptions();
-    CRM_Core_Session::setStatus(E::ts('You picked color "%1"', [
-      1 => $options[$values['favorite_color']],
-    ]));
+  public function postProcess() {
+    $this->_values = $this->exportValues();
+    $this->_recordName = $this->displayName();
+    $this->_updateAction = Api::update(FALSE)->addWhere('id', '=', $this->_id);
     parent::postProcess();
   }
 
-  public function getColorOptions(): array {
-    $options = [
-      '' => E::ts('- select -'),
-      '#f00' => E::ts('Red'),
-      '#0f0' => E::ts('Green'),
-      '#00f' => E::ts('Blue'),
-      '#f0f' => E::ts('Purple'),
-    ];
-    foreach (['1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e'] as $f) {
-      $options["#{$f}{$f}{$f}"] = E::ts('Grey (%1)', [1 => $f]);
-    }
-    return $options;
+  public function getDefaultEntity()
+  {
+    return 'contact';
   }
 
-  /**
-   * Get the fields/elements defined in this form.
-   *
-   * @return array (string)
-   */
-  public function getRenderableElementNames(): array {
-    // The _elements list includes some items which should not be
-    // auto-rendered in the loop -- such as "qfKey" and "buttons".  These
-    // items don't have labels.  We'll identify renderable by filtering on
-    // the 'label'.
-    $elementNames = [];
-    foreach ($this->_elements as $element) {
-      /** @var HTML_QuickForm_Element $element */
-      $label = $element->getLabel();
-      if (!empty($label)) {
-        $elementNames[] = $element->getName();
-      }
-    }
-    return $elementNames;
+  protected function initializeGetSingleRecordAction()
+  {
+    $this->_id = $this->_id ?? Session::getLoggedInContactID();
+    return Api::get(TRUE)
+      ->addWhere('id', '=', $this->_id)
+      ->setLimit(1);
+  }
+
+  private function displayName(){
+    return $this->_values['first_name'] . ' ' . $this->_values['last_name'];
   }
 
 }

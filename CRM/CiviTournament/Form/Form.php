@@ -19,7 +19,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
       $this->startNewRecord();
     } else if ($this->needsUpdate()) {
       $this->reloadExistingRecord();
-    }
+    } 
   }
 
   public function buildQuickForm()
@@ -66,7 +66,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
   {
     $defaults = $this->_values;
     return $defaults;
-  }
+  }  
 
   /**
    * Default form context used as part of addField()
@@ -145,8 +145,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     $this->_action = CRM_Utils_Request::retrieve('action', 'String', $this, FALSE, 'update');
   }
 
-  private function isNewRecord()
-  {
+  private function isNewRecord() {
     return $this->_action == CRM_Core_Action::ADD;
   }
 
@@ -154,4 +153,5 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
   {
     return $this->_action == CRM_Core_Action::UPDATE;
   }
+
 }
