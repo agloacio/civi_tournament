@@ -32,10 +32,10 @@ class Field
   private function defaultLabel()
   {
     $token = str_contains($this->_name, '_id') ? str_replace('_id', '', $this->_name) : $this->_name;
-    return $this->capitalizeWords($token);
+    return Field::capitalizeWords($token);
   }
 
-  private function capitalizeWords($string)
+  private static function capitalizeWords($string)
   {
     $words = explode('_', $string);
     $capitalizedWords = array_map('ucfirst', $words);

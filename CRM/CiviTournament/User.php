@@ -1,11 +1,9 @@
 <?php
-use \Civi\Api4\Individual as Api;
+require_once "TournamentObject.php";
 require_once "CRM/CiviTournament/Session.php";
 
-class User
+class User extends TournamentObject
 {
-  public $_id;
-  public $_name;
   public $_contactUrl;
 
   public function __construct($id = null)
@@ -15,5 +13,8 @@ class User
     }
 
     $this->_id = $id;
+
+    $this->_label = 'Mike';
+    $this->_contactUrl = "http://localhost:45875/wp-admin/admin.php?page=CiviCRM&q=civicrm/tournament/person&cid={$this->_id}";
   }
 }

@@ -62,4 +62,11 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form
     return $this->_values['first_name'] . ' ' . $this->_values['last_name'];
   }
 
+
+  protected function updateTitle()
+  {
+    $this->_recordName = $this->displayName();
+    parent::updateTitle();
+  }
+
 }
