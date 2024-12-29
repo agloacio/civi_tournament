@@ -3,7 +3,7 @@ require_once "Form.php";
 require_once "Field.php";
 require_once "CRM/CiviTournament/Session.php";
 
-use \Civi\Api4\Individual as Api;
+use \Civi\Api4\Individual as Entity;
 
 /**
  * Form controller class
@@ -41,7 +41,7 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form
   public function postProcess() {
     $this->_values = $this->exportValues();
     $this->_recordName = $this->displayName();
-    $this->_updateAction = Api::update(FALSE)->addWhere('id', '=', $this->_id);
+    $this->_updateAction = Entity::update(FALSE)->addWhere('id', '=', $this->_id);
     parent::postProcess();
   }
 
@@ -53,7 +53,7 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form
   protected function initializeGetSingleRecordAction()
   {
     $this->_id = $this->_id ?? Session::getLoggedInContactID();
-    return Api::get(TRUE)
+    return Entity::get(TRUE)
       ->addWhere('id', '=', $this->_id)
       ->setLimit(1);
   }

@@ -1,6 +1,8 @@
 <?php
 require_once "TournamentObject.php";
-require_once "CRM/CiviTournament/Session.php";
+require_once "Session.php";
+require_once "CiviTournament_Utils_System.php";
+require_once "Person.php";
 
 class User extends TournamentObject
 {
@@ -14,7 +16,9 @@ class User extends TournamentObject
 
     $this->_id = $id;
 
-    $this->_label = 'Mike';
-    $this->_contactUrl = "http://localhost:45875/wp-admin/admin.php?page=CiviCRM&q=civicrm/tournament/person&cid={$this->_id}";
+    $person = new Person($id);
+
+    $this->_label = $person->_firstName;
+    $this->_contactUrl = CiviTournament_Utils_System::civi_tournament_get_person_url($this->_id);
   }
 }
