@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install>
+	<files>
+		<file from="custom/contact/type/BillingOrganization.xml" to="custom/contact/type/BillingOrganization.xml"/>
+	</files>
+</install>
