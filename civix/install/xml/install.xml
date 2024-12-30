@@ -2,5 +2,18 @@
 <install>
 	<files>
 		<file from="custom/contact/type/BillingOrganization.xml" to="custom/contact/type/BillingOrganization.xml"/>
+		<file from="custom/relationship/type/BillingContactToBillingOrganization.xml" to="custom/relationship/type/BillingContactToBillingOrganization.xml"/>
 	</files>
+	<config>
+		<group name="CiviTournament Settings" title="CiviTournament Settings" description="Settings for the CiviTournament extension.">
+			<setting name="billing_organization_type_id" type="Int" default="4" weight="1">
+				<label>Billing Organization Contact Type ID</label>
+				<description>The ID of the Billing Organization contact type.</description>
+			</setting>
+			<setting name="billing_organization_contact_id" type="Int" default="11" weight="1">
+				<label>Billing Contact Relationship Type ID</label>
+				<description>The ID of the Billing Contact Relationship type.</description>
+			</setting>
+		</group>
+	</config>
 </install>
