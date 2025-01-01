@@ -26,6 +26,11 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
   {
     $legacyDate = FALSE;
 
+    $organizations = \Civi\Api4\Contact::get(FALSE)
+      ->addSelect('email_primary.email')
+      ->setLimit(25)
+      ->execute();
+
     foreach ($this->_fields as $field) {
       $this->addField($field->_name, $field->_props, $field->_required, $legacyDate);
     }
