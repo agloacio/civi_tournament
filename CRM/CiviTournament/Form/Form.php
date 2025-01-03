@@ -32,7 +32,15 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
       ->execute();
 
     foreach ($this->_fields as $field) {
-      $this->addField($field->_name, $field->_props, $field->_required, $legacyDate);
+      try {
+        $this->addField($field->_name, $field->_props, $field->_required, $legacyDate);
+      } catch (CRM_Core_Exception $e) {
+        switch ($field->_type) {
+          default: {
+            $this->add(strtolower($field->_type), $field->_name, $field->_label, $field->_props, $field->_required);
+          }
+        }
+      } 
     }
 
     $this->applyFilter('__ALL__', 'trim');
