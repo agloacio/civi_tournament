@@ -4,6 +4,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 {
   public const LEGACY_DATE = FALSE;
   public const COUNTRY_SELECT = 'CountrySelect';
+  public const STATE_PROVINCE_SELECT = 'StateProvinceSelect';
 
   protected $_values;
   protected $_id;
@@ -147,12 +148,12 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
       switch ($type) {
         case CRM_CiviTournament_Form::COUNTRY_SELECT: {
           $countries = CRM_Core_PseudoConstant::country();
-          $this->add('select', $name, $label ?? $name, $countries, $required,
-            array(
-              'empty_value' => ' '
-            )
-          );
-
+          $this->add('select', $name, $label ?? $name, $countries, $required, array('empty_value' => ' '));
+          break;
+        }
+        case CRM_CiviTournament_Form::STATE_PROVINCE_SELECT: {
+          $states_provinces = CRM_Core_PseudoConstant::stateProvince();
+          $this->add('select', $name, $label ?? $name, $states_provinces, $required, array('empty_value' => ' '));
           break;
         }
         default: {

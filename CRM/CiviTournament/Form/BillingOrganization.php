@@ -29,7 +29,7 @@ class CRM_CiviTournament_Form_BillingOrganization extends CRM_CiviTournament_For
       new Field($entity, 'address_primary.street_address', 'Address', 'Text', TRUE),
       new Field($entity, 'address_primary.supplemental_address_1', '', 'Text', FALSE),
       new Field($entity, 'address_primary.city', 'City', 'Text', TRUE),
-      new Field($entity, 'address_primary.state_province_id', 'State', 'Select', TRUE),
+      new Field($entity, 'address_primary.state_province_id', 'State', CRM_CiviTournament_Form::STATE_PROVINCE_SELECT, TRUE),
       new Field($entity, 'address_primary.postal_code', 'Postal Code', 'Text', TRUE),
       new Field($entity, 'address_primary.postal_code_suffix', 'Postal Code Suffix', 'Text', FALSE),
       new Field($entity, 'address_primary.country_id', 'Country', CRM_CiviTournament_Form::COUNTRY_SELECT, FALSE)
