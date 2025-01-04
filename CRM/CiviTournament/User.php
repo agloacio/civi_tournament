@@ -8,7 +8,6 @@ require_once "BillingOrganization.php";
 
 class User extends TournamentObject
 {
-  public $_contactUrl;
   public $_billingOrganizations;
 
   public function __construct($id = null)
@@ -22,7 +21,6 @@ class User extends TournamentObject
     $person = new Person($id);
 
     $this->_label = $person->_firstName;
-    $this->_contactUrl = CiviTournament_Utils_System::civi_tournament_get_person_url($this->_id);
     $this->_billingOrganizations = BillingOrganization::getBillingOrganizations($this->_id);
   }
 }
