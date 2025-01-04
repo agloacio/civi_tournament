@@ -1,9 +1,9 @@
 <?php
 
-use CRM_CiviTournament_ExtensionUtil as E;
-
 class CRM_CiviTournament_Form extends CRM_Core_Form
 {
+  public const LEGACY_DATE = FALSE;
+
   protected $_values;
   protected $_id;
   protected $_fields;
@@ -24,23 +24,8 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
   public function buildQuickForm()
   {
-    $legacyDate = FALSE;
-
-    $organizations = \Civi\Api4\Contact::get(FALSE)
-      ->addSelect('email_primary.email')
-      ->setLimit(25)
-      ->execute();
-
     foreach ($this->_fields as $field) {
-      try {
-        $this->addField($field->_name, $field->_props, $field->_required, $legacyDate);
-      } catch (Exception $e) {
-        switch ($field->_type) {
-          default: {
-            $this->add(strtolower($field->_type), $field->_name, $field->_label, $field->_props, $field->_required);
-          }
-        }
-      } 
+      $this->addFieldElement($field->_name, $field->_type, $field->_props, $field->_required, $field->_label);
     }
 
     $this->applyFilter('__ALL__', 'trim');
@@ -151,6 +136,19 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
     $session = CRM_Core_Session::singleton();
     $session->pushUserContext(CRM_Utils_System::url('civicrm/dashboard', 'reset=1'));
+  }
+
+  public function addFieldElement($name,  $type='Text', $props = [], $required = FALSE, $label = null)
+  {
+    try {
+      parent::addField($name, $props, $required, CRM_CiviTournament_Form::LEGACY_DATE);
+    } catch (Exception $e) {
+      switch ($type) {
+        default: {
+          $this->add(strtolower($type), $name, $label ?? $name, $props, $required);
+        }
+      }
+    }
   }
 
   private function initializeAction()
