@@ -3,6 +3,7 @@
 class CRM_CiviTournament_Form extends CRM_Core_Form
 {
   public const LEGACY_DATE = FALSE;
+  public const COUNTRY_SELECT = 'CountrySelect';
 
   protected $_values;
   protected $_id;
@@ -138,12 +139,22 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     $session->pushUserContext(CRM_Utils_System::url('civicrm/dashboard', 'reset=1'));
   }
 
-  public function addFieldElement($name,  $type='Text', $props = [], $required = FALSE, $label = null)
+  private function addFieldElement($name, $type='Text', $props = [], $required = FALSE, $label = null)
   {
     try {
       parent::addField($name, $props, $required, CRM_CiviTournament_Form::LEGACY_DATE);
     } catch (Exception $e) {
       switch ($type) {
+        case CRM_CiviTournament_Form::COUNTRY_SELECT: {
+          $countries = CRM_Core_PseudoConstant::country();
+          $this->add('select', $name, $label ?? $name, $countries, $required,
+            array(
+              'empty_value' => ' '
+            )
+          );
+
+          break;
+        }
         default: {
           $this->add(strtolower($type), $name, $label ?? $name, $props, $required);
         }
