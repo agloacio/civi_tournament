@@ -22,7 +22,7 @@ class Person extends TournamentObject
   public $_suffix;
 
   public function __construct($id = null){
-    $this->_id = $id;
+    parent::__construct($id);
     if (!empty($this->_id)) {
       $individuals = Entity::get(TRUE)
         ->addSelect('display_name', 'sort_name', 'first_name', 'middle_name', 'last_name', 'gender_id', 'gender_id:label', 'birth_date', 'prefix_id', 'prefix_id:label', 'suffix_id', 'suffix_id:label')
