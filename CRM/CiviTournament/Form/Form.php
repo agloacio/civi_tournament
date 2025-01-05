@@ -148,7 +148,13 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
       switch ($type) {
         case CRM_CiviTournament_Form::COUNTRY_SELECT: {
           $countries = CRM_Core_PseudoConstant::country();
-          $this->add('select', $name, $label ?? $name, $countries, $required, array('empty_value' => ' '));
+          $this->add('select', $name, $label ?? $name, $countries, $required, array(
+            'empty_value' => ' ',
+            'onchange' => 'CRM_CiviTournament_Form.loadStates(this.value, \'address_primary.state_province_id\')'
+          ));
+
+          CRM_Core_Resources::singleton()->addScriptFile('civi_tournament', 'js/CRM_CiviTournament_Form.js');
+
           break;
         }
         case CRM_CiviTournament_Form::STATE_PROVINCE_SELECT: {

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <extension key="civi_tournament" type="module">
 	<file>civi_tournament</file>
-	<name>civi_tournament</name>
+	<name>CiviTournament</name>
 	<description>Tournament management functionality for CiviCRM</description>
 	<license>AGPL-3.0</license>
 	<authors>
