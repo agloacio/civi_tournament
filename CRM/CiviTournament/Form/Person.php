@@ -1,5 +1,5 @@
 <?php
-require_once "Form.php";
+require_once "Contact.php";
 require_once "Field.php";
 require_once "CRM/CiviTournament/Session.php";
 
@@ -10,7 +10,7 @@ use \Civi\Api4\Individual as Entity;
  *
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  */
-class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form 
+class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form_Contact 
 {
   public function __construct($state, $action, $method, $name)
   {
@@ -30,7 +30,6 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form
 
   public function preProcess()
   {
-    $this->_id = CRM_Utils_Request::retrieve('cid', 'Positive');
     parent::preProcess();
   }
 
@@ -41,21 +40,13 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form
   public function postProcess() {
     $this->_values = $this->exportValues();
     $this->_recordName = $this->displayName();
-    $this->_updateAction = Entity::update(FALSE)->addWhere('id', '=', $this->_id);
     parent::postProcess();
-  }
-
-  public function getDefaultEntity()
-  {
-    return 'contact';
   }
 
   protected function initializeGetSingleRecordAction()
   {
     $this->_id = $this->_id ?? Session::getLoggedInContactID();
-    return Entity::get(TRUE)
-      ->addWhere('id', '=', $this->_id)
-      ->setLimit(1);
+    return parent::initializeGetSingleRecordAction();
   }
 
   private function displayName(){
