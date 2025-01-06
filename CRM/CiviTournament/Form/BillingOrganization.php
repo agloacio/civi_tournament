@@ -13,7 +13,7 @@ use \Civi\Api4\Organization as Entity;
  * @version 1.0
  * @author msteigerwald
  */
-class CRM_CiviTournament_Form_BillingOrganization extends CRM_CiviTournament_Form
+class CRM_CiviTournament_Form_BillingOrganization extends CRM_CiviTournament_Form_Contact
 {
   public function __construct($state, $action, $method, $name)
   {
@@ -38,24 +38,11 @@ class CRM_CiviTournament_Form_BillingOrganization extends CRM_CiviTournament_For
 
   public function preProcess()
   {
-    $this->_id = CRM_Utils_Request::retrieve('cid', 'Positive');
     parent::preProcess();
   }
 
   public function buildQuickForm()
   {
     parent::buildQuickForm();
-  }
-
-  public function getDefaultEntity()
-  {
-    return 'contact';
-  }
-
-  protected function initializeGetSingleRecordAction()
-  {
-    return Entity::get(TRUE)
-      ->addWhere('id', '=', $this->_id)
-      ->setLimit(1);
   }
 }
