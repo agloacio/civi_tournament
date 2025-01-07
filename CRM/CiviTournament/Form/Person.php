@@ -3,13 +3,14 @@ require_once "Contact.php";
 require_once "Field.php";
 require_once "CRM/CiviTournament/Session.php";
 
-use \Civi\Api4\Individual as Entity;
-
 /**
- * Form controller class
+ * Peron Form controller class
  *
+ * Form to add and update people.
+ * 
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  */
+
 class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form_Contact 
 {
   public function __construct($state, $action, $method, $name)
@@ -17,6 +18,7 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form_Contact
     parent::__construct($state, $action, $method, $name);
 
     $entity = $this->getDefaultEntity();
+
     $this->_fields = array(
       new Field($entity, 'last_name', 'Last Name', 'Text', TRUE),
       new Field($entity, 'first_name', 'First Name', 'Text', TRUE),
@@ -26,15 +28,6 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form_Contact
       new Field($entity, 'prefix_id', 'Prefix', 'Select', FALSE),
       new Field($entity, 'suffix_id', 'Suffix', 'Select', FALSE)
     );
-  }
-
-  public function preProcess()
-  {
-    parent::preProcess();
-  }
-
-  public function buildQuickForm() {
-    parent::buildQuickForm();
   }
 
   public function postProcess() {
@@ -49,15 +42,13 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form_Contact
     return parent::initializeGetSingleRecordAction();
   }
 
-  private function displayName(){
-    return $this->_values['first_name'] . ' ' . $this->_values['last_name'];
-  }
-
-
   protected function updateTitle()
   {
     $this->_recordName = $this->displayName();
     parent::updateTitle();
   }
 
+  private function displayName(){
+    return $this->_values['first_name'] . ' ' . $this->_values['last_name'];
+  }
 }

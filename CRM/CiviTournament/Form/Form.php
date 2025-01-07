@@ -14,14 +14,14 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
   public function preProcess()
   {
-    parent::preProcess();
-    $this->initializeAction();
-
-    if ($this->isNewRecord()) {
-      $this->startNewRecord();
-    } else if ($this->needsUpdate()) {
-      $this->reloadExistingRecord();
-    } 
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+      $this->initializeAction();
+      if ($this->isNewRecord()) {
+        $this->startNewRecord();
+      } else if ($this->needsUpdate()) {
+        $this->reloadExistingRecord();
+      }
+    }
   }
 
   public function buildQuickForm()
@@ -128,7 +128,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
   protected function startNewRecord()
   {
-    // check for add contacts permissions
+    // check for add permissions
     if (!CRM_Core_Permission::check('add ' . $this->getDefaultEntity() . 's')) {
       CRM_Utils_System::permissionDenied();
       CRM_Utils_System::civiExit();
@@ -143,10 +143,10 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
   private function addFieldElement($name, $type='Text', $props = [], $required = FALSE, $label = null)
   {
     try {
-      parent::addField($name, $props, $required, CRM_CiviTournament_Form::LEGACY_DATE);
+      parent::addField($name, $props, $required, self::LEGACY_DATE);
     } catch (Exception $e) {
       switch ($type) {
-        case CRM_CiviTournament_Form::COUNTRY_SELECT: {
+        case self::COUNTRY_SELECT: {
           $countries = CRM_Core_PseudoConstant::country();
           $this->add('select', $name, $label ?? $name, $countries, $required, array(
             'empty_value' => ' ',
@@ -157,7 +157,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
           break;
         }
-        case CRM_CiviTournament_Form::STATE_PROVINCE_SELECT: {
+        case self::STATE_PROVINCE_SELECT: {
           $states_provinces = CRM_Core_PseudoConstant::stateProvince();
           $this->add('select', $name, $label ?? $name, $states_provinces, $required, array('empty_value' => ' '));
           break;

@@ -2,12 +2,11 @@
 require_once "Form.php";
 require_once "Field.php";
 
-use \Civi\Api4\Organization as Entity;
-
 /**
  * Billing Organization Form controller class
  *
  * Create/Update Billing Organizations.
+ * 
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  *
  * @version 1.0
@@ -36,13 +35,8 @@ class CRM_CiviTournament_Form_BillingOrganization extends CRM_CiviTournament_For
     );
   }
 
-  public function preProcess()
-  {
-    parent::preProcess();
-  }
-
-  public function buildQuickForm()
-  {
-    parent::buildQuickForm();
-  }
+  //public function buildQuickForm()
+  //{
+  //  parent::buildQuickForm();
+  //}
 }
