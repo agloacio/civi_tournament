@@ -27,7 +27,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
   public function buildQuickForm()
   {
     foreach ($this->_fields as $field) {
-      $this->addFieldElement($field->_name, $field->_type, $field->_props, $field->_required, $field->_label);
+      $this->addFieldElement($field->_apiFieldName, $field->_type, $field->_props, $field->_required, $field->_label);
     }
 
     $this->applyFilter('__ALL__', 'trim');
@@ -46,8 +46,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
   public function postProcess()
   {
     foreach ($this->_fields as $field) {
-      $valuesKey = fieldNameKey($field->_name);
-      $this->_updateAction->addValue($field->_name, $this->_submitValues[$valuesKey]);
+      $this->_updateAction->addValue($field->_apiFieldName, $this->_submitValues[$field->_name]);
     }
 
     $this->_updateAction->execute();
@@ -68,7 +67,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
       $defaults = $this->_values;
     } else {
-      $defaults = array_map('fieldNameKey',$this->_submitValues);
+      $defaults = $this->_submitValues;
     }
     return $defaults;
   }  
@@ -102,7 +101,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     $getAction = $this->initializeGetSingleRecordAction();
 
     foreach ($this->_fields as &$field) {
-      $getAction = $getAction->addSelect($field->_name);
+      $getAction = $getAction->addSelect($field->_apiFieldName);
     }
 
     $result = $getAction->execute();
@@ -155,7 +154,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
           $countries = CRM_Core_PseudoConstant::country();
           $this->add('select', $name, $label ?? $name, $countries, $required, array(
             'empty_value' => ' ',
-            'onchange' => 'CRM_CiviTournament_Form.loadStates(this.value, \'address_primary.state_province_id\')'
+            'onchange' => 'CRM_CiviTournament_Form.loadStates(this.value, \'address_primary_state_province_id\')'
           ));
 
           CRM_Core_Resources::singleton()->addScriptFile('civi_tournament', 'js/CRM_CiviTournament_Form.js');
@@ -186,10 +185,5 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
   private function needsUpdate()
   {
     return $this->_action == CRM_Core_Action::UPDATE;
-  }
-
-  function fieldNameKey($fieldName)
-  {
-    return str_replace(".", "_", $fieldName);
   }
 }

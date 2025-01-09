@@ -20,6 +20,10 @@ class CRM_CiviTournament_Form_Contact extends CRM_CiviTournament_Form
     parent::preProcess();
   }
 
+  public function buildQuickForm() {
+    parent::buildQuickForm();
+  }
+
   public function postProcess() {
     $this->_values = $this->_values ?? $this->exportValues();
     $this->_updateAction = Entity::update(FALSE)->addWhere('id', '=', $this->_id);
@@ -34,7 +38,6 @@ class CRM_CiviTournament_Form_Contact extends CRM_CiviTournament_Form
   protected function initializeGetSingleRecordAction()
   {
     return Entity::get(TRUE)
-      ->addSelect('display_name', 'sort_name')
       ->addWhere('id', '=', $this->_id)
       ->setLimit(1);
   }
