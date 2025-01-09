@@ -46,7 +46,8 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
   public function postProcess()
   {
     foreach ($this->_fields as $field) {
-      $this->_updateAction->addValue($field->_name, $this->_values[$field->_name]);
+      $valuesKey = fieldNameKey($field->_name);
+      $this->_updateAction->addValue($field->_name, $this->_submitValues[$valuesKey]);
     }
 
     $this->_updateAction->execute();
@@ -64,7 +65,11 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
    */
   public function setDefaultValues()
   {
-    $defaults = $this->_values;
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+      $defaults = $this->_values;
+    } else {
+      $defaults = array_map('fieldNameKey',$this->_submitValues);
+    }
     return $defaults;
   }  
 
@@ -183,4 +188,8 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     return $this->_action == CRM_Core_Action::UPDATE;
   }
 
+  function fieldNameKey($fieldName)
+  {
+    return str_replace(".", "_", $fieldName);
+  }
 }

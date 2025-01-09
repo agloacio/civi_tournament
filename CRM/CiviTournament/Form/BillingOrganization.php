@@ -34,9 +34,4 @@ class CRM_CiviTournament_Form_BillingOrganization extends CRM_CiviTournament_For
       new Field($entity, 'address_primary.country_id', 'Country', CRM_CiviTournament_Form::COUNTRY_SELECT, FALSE)
     );
   }
-
-  //public function buildQuickForm()
-  //{
-  //  parent::buildQuickForm();
-  //}
 }
