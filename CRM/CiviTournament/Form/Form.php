@@ -27,7 +27,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
   public function buildQuickForm()
   {
     foreach ($this->_fields as $field) {
-      $this->addFieldElement($field->_apiFieldName, $field->_type, $field->_props, $field->_required, $field->_label);
+      $this->addFieldElement($field->_name, $field->_type, $field->_props, $field->_required, $field->_label);
     }
 
     $this->applyFilter('__ALL__', 'trim');
@@ -46,7 +46,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
   public function postProcess()
   {
     foreach ($this->_fields as $field) {
-      $this->_updateAction->addValue($field->_apiFieldName, $this->_submitValues[$field->_name]);
+      $this->_updateAction->addValue($field->_entityFieldName, $this->_submitValues[$field->_name]);
     }
 
     $this->_updateAction->execute();
@@ -101,7 +101,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     $getAction = $this->initializeGetSingleRecordAction();
 
     foreach ($this->_fields as &$field) {
-      $getAction = $getAction->addSelect($field->_apiFieldName);
+      $getAction = $getAction->addSelect($field->_entityFieldName);
     }
 
     $result = $getAction->execute();
@@ -122,7 +122,13 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
       CRM_Utils_System::civiExit();
     }
 
+    $this->setRecordName();
     $this->updateTitle();
+  }
+
+  protected function setRecordName()
+  {
+    $this->_recordName = $this->_values['id'];
   }
 
   protected function updateTitle()

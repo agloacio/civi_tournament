@@ -38,7 +38,13 @@ class CRM_CiviTournament_Form_Contact extends CRM_CiviTournament_Form
   protected function initializeGetSingleRecordAction()
   {
     return Entity::get(TRUE)
+      ->addSelect("display_name", "sort_name")
       ->addWhere('id', '=', $this->_id)
       ->setLimit(1);
+  }
+
+  protected function setRecordName()
+  {
+    $this->_recordName = $this->_values['display_name'];
   }
 }

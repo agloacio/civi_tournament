@@ -12,7 +12,7 @@ class Field
 {
   public $_entity;
   public $_name;
-  public $_apiFieldName;
+  public $_entityFieldName;
   public $_label;
   public $_placeholder;
   public $_props;
@@ -23,7 +23,7 @@ class Field
   public function __construct($entity, $apiFieldName, $label = null, $type = 'Text', $required = FALSE, $helpText = null)
   {
     $this->_entity = $entity;
-    $this->_apiFieldName = $apiFieldName;
+    $this->_entityFieldName = $apiFieldName;
     $this->_name = str_replace(".", "_", $apiFieldName);
     $this->_label = ts($label ?? $this->defaultLabel());
     $this->_placeholder = $this->_label;

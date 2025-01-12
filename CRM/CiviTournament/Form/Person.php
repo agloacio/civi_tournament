@@ -44,7 +44,6 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form_Contact
 
   protected function updateTitle()
   {
-    $this->_recordName = $this->displayName();
     parent::updateTitle();
   }
 
