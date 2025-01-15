@@ -33,6 +33,12 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form_Contact
     );
   }
 
+  public function preProcess() {
+    parent::getId();
+    $this->_id = $this->_id ?? Session::getLoggedInContactID();
+    parent::preProcess();
+  }
+
   public function postProcess() {
     $this->_values = $this->exportValues();
     $this->_recordName = $this->displayName();

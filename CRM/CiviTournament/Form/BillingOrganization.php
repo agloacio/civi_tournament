@@ -37,4 +37,10 @@ class CRM_CiviTournament_Form_BillingOrganization extends CRM_CiviTournament_For
       )
     );
   }
+
+  public function preProcess()
+  {
+    parent::getId();
+    parent::preProcess();
+  }
 }

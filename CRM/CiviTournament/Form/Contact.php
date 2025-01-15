@@ -23,10 +23,8 @@ class CRM_CiviTournament_Form_Contact extends CRM_CiviTournament_Form
     );
   }
 
-  public function preProcess()
-  {
-    $this->_id = $this->_id ?? CRM_Utils_Request::retrieve('cid', 'Positive') ?? Session::getLoggedInContactID();
-    parent::preProcess();
+  protected function getId() {
+    $this->_id = $this->_id ?? $this->getSubmitValue("id") ?? CRM_Utils_Request::retrieve('cid', 'Positive');
   }
 
   public function postProcess() {
