@@ -19,14 +19,17 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form_Contact
 
     $entity = $this->getDefaultEntity();
 
-    $this->_fields = array(
-      new Field($entity, 'last_name', 'Last Name', 'Text', TRUE),
-      new Field($entity, 'first_name', 'First Name', 'Text', TRUE),
-      new Field($entity, 'middle_name', 'Middle Name', 'Text', FALSE),
-      new Field($entity, 'gender_id', 'Gender', 'Radio', FALSE),
-      new Field($entity, 'birth_date', 'Birth Date', 'Select Date', FALSE),
-      new Field($entity, 'prefix_id', 'Prefix', 'Select', FALSE),
-      new Field($entity, 'suffix_id', 'Suffix', 'Select', FALSE)
+    $this->_fields = array_merge(
+      $this->_fields,
+      array(
+        new Field($entity, 'last_name', 'Last Name', 'Text', TRUE),
+        new Field($entity, 'first_name', 'First Name', 'Text', TRUE),
+        new Field($entity, 'middle_name', 'Middle Name', 'Text', FALSE),
+        new Field($entity, 'gender_id', 'Gender', 'Radio', FALSE),
+        new Field($entity, 'birth_date', 'Birth Date', 'Select Date', FALSE),
+        new Field($entity, 'prefix_id', 'Prefix', 'Select', FALSE),
+        new Field($entity, 'suffix_id', 'Suffix', 'Select', FALSE)
+      )
     );
   }
 
@@ -34,12 +37,6 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form_Contact
     $this->_values = $this->exportValues();
     $this->_recordName = $this->displayName();
     parent::postProcess();
-  }
-
-  protected function initializeGetSingleRecordAction()
-  {
-    $this->_id = $this->_id ?? Session::getLoggedInContactID();
-    return parent::initializeGetSingleRecordAction();
   }
 
   protected function updateTitle()

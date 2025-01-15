@@ -12,21 +12,26 @@ use \Civi\Api4\Contact as Entity;
  */
 class CRM_CiviTournament_Form_Contact extends CRM_CiviTournament_Form 
 {
+  public function __construct($state, $action, $method, $name)
+  {
+    parent::__construct($state, $action, $method, $name);
+
+    $entity = $this->getDefaultEntity();
+
+    $this->_fields = array(
+      new Field($entity, 'id', 'id', 'Hidden', FALSE)
+    );
+  }
+
   public function preProcess()
   {
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-      $this->_id = CRM_Utils_Request::retrieve('cid', 'Positive');
-    }
+    $this->_id = $this->_id ?? CRM_Utils_Request::retrieve('cid', 'Positive') ?? Session::getLoggedInContactID();
     parent::preProcess();
   }
 
-  public function buildQuickForm() {
-    parent::buildQuickForm();
-  }
-
   public function postProcess() {
-    $this->_values = $this->_values ?? $this->exportValues();
-    $this->_updateAction = Entity::update(FALSE)->addWhere('id', '=', $this->_id);
+    $this->_values = $this->exportValues();
+    $this->_updateAction = Entity::update(FALSE)->addWhere('id', '=', $this->_values["id"]);
     parent::postProcess();
   }
 

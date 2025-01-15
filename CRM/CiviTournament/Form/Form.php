@@ -14,8 +14,9 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
   public function preProcess()
   {
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-      $this->initializeAction();
+    $this->initializeAction();
+    $submittedId = $this->getSubmitValue("id");
+    if ($submittedId === null) {
       if ($this->isNewRecord()) {
         $this->startNewRecord();
       } else if ($this->needsUpdate()) {
@@ -45,8 +46,11 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
   public function postProcess()
   {
+    $submittedValues = $this->getSubmitValues();
     foreach ($this->_fields as $field) {
-      $this->_updateAction->addValue($field->_name, $this->_submitValues[self::toHtmlElement($field->_name)]);
+      if ($field->_type != 'Hidden') {
+        $this->_updateAction->addValue($field->_name, $submittedValues[self::toHtmlElement($field->_name)]);
+      }
     }
 
     $this->_updateAction->execute();
@@ -70,7 +74,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
       $defaults = $this->_submitValues;
     }
     return $defaults;
-  }  
+  }
 
   /**
    * Default form context used as part of addField()
