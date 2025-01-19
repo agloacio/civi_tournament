@@ -1,12 +1,13 @@
 <?php
-use \Civi\Api4\Individual as Api;
-require_once "CRM/CiviTournament/Session.php";
+require_once "TournamentObject.php";
+require_once "Session.php";
+require_once "Person.php";
+require_once 'includes/CiviTournament_Util_Cache.php';
+require_once "BillingOrganization.php";
 
-class User
+class User extends Person
 {
-  public $_id;
-  public $_name;
-  public $_contactUrl;
+  public $_billingOrganizations;
 
   public function __construct($id = null)
   {
@@ -14,6 +15,7 @@ class User
       $id = Session::getLoggedInContactID();
     }
 
-    $this->_id = $id;
+    parent::__construct($id);
+    $this->_billingOrganizations = BillingOrganization::getBillingOrganizations($this->_id);
   }
 }

@@ -1,9 +1,11 @@
 <?php
 
-use CRM_CiviTournament_ExtensionUtil as E;
-
 class CRM_CiviTournament_Form extends CRM_Core_Form
 {
+  public const LEGACY_DATE = FALSE;
+  public const COUNTRY_SELECT = 'CountrySelect';
+  public const STATE_PROVINCE_SELECT = 'StateProvinceSelect';
+
   protected $_values;
   protected $_id;
   protected $_fields;
@@ -12,22 +14,21 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
   public function preProcess()
   {
-    parent::preProcess();
     $this->initializeAction();
-
-    if ($this->isNewRecord()) {
-      $this->startNewRecord();
-    } else if ($this->needsUpdate()) {
-      $this->reloadExistingRecord();
-    } 
+    $submittedId = $this->getSubmitValue("id");
+    if ($submittedId === null) {
+      if ($this->isNewRecord()) {
+        $this->startNewRecord();
+      } else if ($this->needsUpdate()) {
+        $this->reloadExistingRecord();
+      }
+    }
   }
 
   public function buildQuickForm()
   {
-    $legacyDate = FALSE;
-
     foreach ($this->_fields as $field) {
-      $this->addField($field->_name, $field->_props, $field->_required, $legacyDate);
+      $this->addFieldElement($field->_name, $field->_type, $field->_props, $field->_required, $field->_label);
     }
 
     $this->applyFilter('__ALL__', 'trim');
@@ -45,8 +46,11 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
   public function postProcess()
   {
+    $submittedValues = $this->getSubmitValues();
     foreach ($this->_fields as $field) {
-      $this->_updateAction->addValue($field->_name, $this->_values[$field->_name]);
+      if ($field->_type != 'Hidden') {
+        $this->_updateAction->addValue($field->_name, $submittedValues[self::toHtmlElement($field->_name)]);
+      }
     }
 
     $this->_updateAction->execute();
@@ -64,9 +68,13 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
    */
   public function setDefaultValues()
   {
-    $defaults = $this->_values;
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+      $defaults = $this->_values;
+    } else {
+      $defaults = $this->_submitValues;
+    }
     return $defaults;
-  }  
+  }
 
   /**
    * Default form context used as part of addField()
@@ -100,14 +108,14 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
       $getAction = $getAction->addSelect($field->_name);
     }
 
-    $result = $getAction->execute();
+    $apiResults = $getAction->execute();
 
     // Check if record was found
-    if (!$result) {
+    if (!$apiResults) {
       CRM_Core_Error::statusBounce(ts("Could not find $this->_name with id = $this->_id"));
     }
 
-    $this->_values = $result[0];
+    $this->_values = self::toHtmlElements($apiResults[0]);
 
     if (empty($this->_values['id'])) {
       CRM_Core_Error::statusBounce(ts("Could not find $this->_name with id = $this->_id"));
@@ -118,7 +126,13 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
       CRM_Utils_System::civiExit();
     }
 
+    $this->setRecordName();
     $this->updateTitle();
+  }
+
+  protected function setRecordName()
+  {
+    $this->_recordName = $this->_values['id'];
   }
 
   protected function updateTitle()
@@ -128,7 +142,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
   protected function startNewRecord()
   {
-    // check for add contacts permissions
+    // check for add permissions
     if (!CRM_Core_Permission::check('add ' . $this->getDefaultEntity() . 's')) {
       CRM_Utils_System::permissionDenied();
       CRM_Utils_System::civiExit();
@@ -138,6 +152,36 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
     $session = CRM_Core_Session::singleton();
     $session->pushUserContext(CRM_Utils_System::url('civicrm/dashboard', 'reset=1'));
+  }
+
+  private function addFieldElement($name, $type='Text', $props = [], $required = FALSE, $label = null)
+  {
+    $elementName = self::toHtmlElement($name);
+    try {
+      parent::addField($elementName, $props, $required, self::LEGACY_DATE);
+    } catch (Exception $e) {
+      switch ($type) {
+        case self::COUNTRY_SELECT: {
+          $countries = CRM_Core_PseudoConstant::country();
+          $this->add('select', $elementName, $label ?? $elementName, $countries, $required, array(
+            'empty_value' => ' ',
+            'onchange' => 'CRM_CiviTournament_Form.loadStates(this.value, \'address_primary_state_province_id\')'
+          ));
+
+          CRM_Core_Resources::singleton()->addScriptFile('civi_tournament', 'js/CRM_CiviTournament_Form.js');
+
+          break;
+        }
+        case self::STATE_PROVINCE_SELECT: {
+          $states_provinces = CRM_Core_PseudoConstant::stateProvince();
+          $this->add('select', $elementName, $label ?? $elementName, $states_provinces, $required, array('empty_value' => ' '));
+          break;
+        }
+        default: {
+          $this->add(strtolower($type), $elementName, $label ?? $elementName, $props, $required);
+        }
+      }
+    }
   }
 
   private function initializeAction()
@@ -154,4 +198,16 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     return $this->_action == CRM_Core_Action::UPDATE;
   }
 
+  private static function toHtmlElements($apiResult){
+    return array_combine(
+      array_map(function ($key) {
+        return self::toHtmlElement($key);
+      }, array_keys($apiResult)),
+      array_values($apiResult)
+    );
+  }
+
+  private static function toHtmlElement($key) {
+    return str_replace('.', '_', $key);
+  }
 }

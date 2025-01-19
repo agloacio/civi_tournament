@@ -41,6 +41,7 @@ function civi_tournament_civicrm_navigationMenu(&$menu)
   _civi_tournament_civix_insert_navigation_menu($menu, '', array(
     'label' => E::ts('Tournaments'),
     'name' => 'tournament',
+    'url' => 'civicrm/tournament',
     'permission' => 'access CiviEvent',
     'operator' => 'OR',
     'separator' => 0,

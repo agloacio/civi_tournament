@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <extension key="civi_tournament" type="module">
 	<file>civi_tournament</file>
-	<name>civi_tournament</name>
-	<description>FIXME</description>
+	<name>CiviTournament</name>
+	<description>Tournament management functionality for CiviCRM</description>
 	<license>AGPL-3.0</license>
 	<authors>
 		<author>
@@ -12,9 +12,9 @@
 		</author>
 	</authors>
 	<urls>
-		<url desc="Main Extension Page">https://FIXME</url>
-		<url desc="Documentation">https://FIXME</url>
-		<url desc="Support">https://FIXME</url>
+		<url desc="Main Extension Page">https://github.com/agloacio/civi_tournament</url>
+		<url desc="Documentation">https://github.com/agloacio/civi_tournament</url>
+		<url desc="Support">cio@agloa.org</url>
 		<url desc="Licensing">https://www.gnu.org/licenses/agpl-3.0.html</url>
 	</urls>
 	<releaseDate>2024-12-21</releaseDate>
