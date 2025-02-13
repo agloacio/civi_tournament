@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<contact_type>
-	<name>Billing Organization</name>
-	<label>Billing Organization</label>
-	<description>Organization (e.g., School District) responsible for billing.</description>
-	<is_active>1</is_active>
-	<extends>Organization</extends>
-</contact_type>
