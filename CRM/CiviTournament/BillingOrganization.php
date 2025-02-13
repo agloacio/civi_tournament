@@ -1,4 +1,5 @@
 <?php
+require_once("Settings.php");
 
 /**
  * Billing Organization
@@ -17,13 +18,13 @@ class BillingOrganization extends TournamentObject
 
   public static function getBillingOrganizations($personId)
   {
-    $billingOrganizationContactTypeID = CiviTournament_Util_Cache::getBillingOrganizationRelationshipTypeID();
+    $billingOrganizationRelationshipTypeID = BillingOrganizationRelationshipType::getBillingOrganizationRelationshipType()["id"];
 
-    if ($billingOrganizationContactTypeID) {
+    if ($billingOrganizationRelationshipTypeID) {
       $entities = \Civi\Api4\Relationship::get(FALSE)
         ->addSelect('contact_id_b', 'contact_id_b.display_name')
         ->addWhere('contact_id_a', '=', $personId)
-        ->addWhere('relationship_type_id', '=', $billingOrganizationContactTypeID)
+        ->addWhere('relationship_type_id', '=', $billingOrganizationRelationshipTypeID)
         ->addWhere('is_active', '=', TRUE)
         ->execute();
 
