@@ -3,7 +3,7 @@ require_once "Form.php";
 require_once "Field.php";
 
 /**
- * Billing Organization Form controller class
+ * Registration Group Form controller class
  *
  * Create/Update Billing Organizations.
  * 
@@ -12,7 +12,7 @@ require_once "Field.php";
  * @version 1.0
  * @author msteigerwald
  */
-class CRM_CiviTournament_Form_BillingOrganization extends CRM_CiviTournament_Form_Contact
+class CRM_CiviTournament_Form_RegistrationGroup extends CRM_CiviTournament_Form_Contact
 {
   public function __construct($state, $action, $method, $name)
   {

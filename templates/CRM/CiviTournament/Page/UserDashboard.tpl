@@ -21,7 +21,7 @@ If you are new to this system, the first step is to double-check <a href="{$user
 You have access to contacts in these groups:        
     <ol>
         {foreach from=$user->_registrationGroups item=group}
-            <li><a href="{crmURL p="{$component_path}/registration_group" q="&cid={$group->_id}"}" target="_blank">{$group->_name}</a></li>
+            <li>{$group->_name}</li>
         {/foreach}
     </ol>
     </li>

@@ -1,5 +1,4 @@
 <?php
-require_once 'includes/CiviTournament_Util_Cache.php';
 require_once "TournamentObject.php";
 require_once "Session.php";
 require_once "Person.php";
