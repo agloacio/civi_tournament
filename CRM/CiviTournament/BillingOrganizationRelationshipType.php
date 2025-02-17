@@ -10,41 +10,7 @@ use \Civi\Api4\RelationshipType as Entity;
  */
 class BillingOrganizationRelationshipType
 {
-  public static function getBillingOrganizationContactType()
-  {
-    $result = \Civi\Api4\ContactType::get(TRUE)
-      ->setLimit(1)
-      ->addSelect('name')
-      ->addSelect('label')
-      ->addSelect('description')
-      ->addWhere('label', '=', 'Billing Organization')
-      ->execute();
-
-    if (is_array($result[0]) && !empty($result[0])) {
-      return $result[0];
-    }
-
-    return self::createBillingOrganiztionContactType();
-  }
-
-  private static function createBillingOrganiztionContactType()
-  {
-    $contactTypes = \Civi\Api4\ContactType::create(TRUE)
-      ->addValue('name', 'Billing_Organization')
-      ->addValue('label', 'Billing Organization')
-      ->addValue('description', 'Organization (e.g., School District) responsible for billing.')
-      ->addValue('icon', 'fa-file-invoice-dollar')
-      ->addValue('parent_id', 3)
-      ->addValue('is_active', TRUE)
-      ->addValue('is_reserved', FALSE)
-      ->execute();
-
-    return $contactTypes[0];
-  }
-
-  public static function getBillingOrganizationRelationshipType()
-  {
-    $fields = [
+  const FIELDS = [
       'name_a_b' => 'Billing Contact for',
       'label_a_b' => 'Billing Contact for',
       'name_b_a' => 'Billing Organization for',
@@ -57,11 +23,12 @@ class BillingOrganizationRelationshipType
       'is_reserved' => FALSE
     ];
 
-    $getAction = Entity::get(TRUE)
-      ->setLimit(1)
-      ->addWhere('name_a_b', '=', 'Billing Contact for');
+  public static function get()
+  {
+    $getAction = Entity::get(TRUE)->setLimit(1);
+    $getAction = self::addWhere($getAction);
 
-    foreach ($fields as $key => $value) {
+    foreach (self::FIELDS as $key => $value) {
       $getAction = $getAction->addSelect($key);
     }
 
@@ -71,23 +38,22 @@ class BillingOrganizationRelationshipType
       return $result[0];
     }
 
-    return self::createBillingOrganizationRelationshipType();
+    return self::create();
   }
 
-  private static function createBillingOrganizationRelationshipType()
+  public static function addWhere($getAction) {
+    return $getAction->addWhere('name_a_b', '=', 'Billing Contact for');
+  }
+
+  private static function create()
   {
-    $results = RelationshipType::create(TRUE)
-      ->addValue('name_a_b', 'Billing Contact for')
-      ->addValue('label_a_b', 'Billing Contact for')
-      ->addValue('name_b_a', 'Billing Organization for')
-      ->addValue('label_b_a', 'Billing Organization for')
-      ->addValue('description', 'Relationship between a Billing Contact and their associated Billing Organization.')
-      ->addValue('contact_type_a', 'Individual')
-      ->addValue('contact_type_b', 'Organization')
-      ->addValue('contact_sub_type_b', 'Billing_Organization')
-      ->addValue('is_active', TRUE)
-      ->addValue('is_reserved', FALSE)
-      ->execute();
+    $createAction = Entity::create(TRUE);
+
+    foreach (self::FIELDS as $key => $value) {
+      $createAction = $createAction->addValue($key, $value);
+    }
+
+    $results = $createAction->execute();
 
     return $results[0];
   }

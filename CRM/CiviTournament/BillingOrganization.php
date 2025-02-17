@@ -18,7 +18,7 @@ class BillingOrganization extends TournamentObject
 
   public static function getBillingOrganizations($personId)
   {
-    $billingOrganizationRelationshipTypeID = BillingOrganizationRelationshipType::getBillingOrganizationRelationshipType()["id"];
+    $billingOrganizationRelationshipTypeID = BillingOrganizationRelationshipType::get()["id"];
 
     if ($billingOrganizationRelationshipTypeID) {
       $entities = \Civi\Api4\Relationship::get(FALSE)
