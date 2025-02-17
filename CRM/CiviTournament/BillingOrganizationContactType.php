@@ -1,44 +1,32 @@
 <?php
-use \Civi\Api4\ContactType as Entity;
 /**
  * Persist Settings
  *
- * Creates and retrieves settings for CiviTournament Extension
+ * Creates and retrieves BillingOrganizationContactType setting for CiviTournament Extension
  *
  * @version 1.0
  * @author steig
  */
-class BillingOrganizationContactType
+require_once('CiviEntitySettings.php');
+class BillingOrganizationContactType extends CiviEntitySettings
 {
-  public static function getBillingOrganizationContactType()
+  const FIELDS = [
+    'name' => 'Billing Organization',
+    'label' => 'Billing Organization',
+    'description' => 'Organization (e.g., School District) responsible for billing.',
+    'icon' => 'fa-file-invoice-dollar',
+    'parent_id:label.name' => 'Organization',
+    'is_active' => TRUE,
+    'is_reserved' => FALSE
+  ];
+
+  public static function addWhere($getAction)
   {
-    $result = \Civi\Api4\ContactType::get(TRUE)
-      ->setLimit(1)
-      ->addSelect('name')
-      ->addSelect('label')
-      ->addSelect('description')
-      ->addWhere('label', '=', 'Billing Organization')
-      ->execute();
-
-    if (is_array($result[0]) && !empty($result[0])) {
-      return $result[0];
-    }
-
-    return self::createBillingOrganiztionContactType();
+    return $getAction->addWhere('label', '=', 'Billing Organization');
   }
 
-  private static function createBillingOrganiztionContactType()
+  protected static function getEntity()
   {
-    $contactTypes = Entity::create(TRUE)
-      ->addValue('name', 'Billing_Organization')
-      ->addValue('label', 'Billing Organization')
-      ->addValue('description', 'Organization (e.g., School District) responsible for billing.')
-      ->addValue('icon', 'fa-file-invoice-dollar')
-      ->addValue('parent_id', 3)
-      ->addValue('is_active', TRUE)
-      ->addValue('is_reserved', FALSE)
-      ->execute();
-
-    return $contactTypes[0];
+    return \Civi\Api4\ContactType::class;
   }
 }
