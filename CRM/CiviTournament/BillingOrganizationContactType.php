@@ -10,15 +10,18 @@
 require_once('CiviEntitySettings.php');
 class BillingOrganizationContactType extends CiviEntitySettings
 {
-  const FIELDS = [
-    'name' => 'Billing Organization',
-    'label' => 'Billing Organization',
-    'description' => 'Organization (e.g., School District) responsible for billing.',
-    'icon' => 'fa-file-invoice-dollar',
-    'parent_id:label.name' => 'Organization',
-    'is_active' => TRUE,
-    'is_reserved' => FALSE
-  ];
+  protected static function computeFields()
+  {
+    return [
+      'name' => 'Billing Organization',
+      'label' => 'Billing Organization',
+      'description' => 'Organization (e.g., School District) responsible for billing.',
+      'parent_id' => 'Individual',
+      'icon' => 'fa-file-invoice-dollar',
+      'is_active' => TRUE,
+      'is_reserved' => FALSE
+    ];
+  }
 
   public static function addWhere($getAction)
   {

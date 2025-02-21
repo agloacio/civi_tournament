@@ -10,7 +10,7 @@
  */
 abstract class CiviEntitySettings
 {
-  const FIELDS = []; // Abstract property, must be defined in child classes
+  protected static $fields; // Static property
 
   abstract public static function addWhere($getAction);
 
@@ -19,7 +19,7 @@ abstract class CiviEntitySettings
     $getAction = static::getEntity()::get(TRUE)->setLimit(1); // Use late static binding
     $getAction = static::addWhere($getAction);
 
-    foreach (static::FIELDS as $key => $value) {
+    foreach (static::getFields() as $key => $value) {
       $getAction = $getAction->addSelect($key);
     }
 
@@ -36,7 +36,7 @@ abstract class CiviEntitySettings
   {
     $createAction = static::getEntity()::create(TRUE); // Use late static binding
 
-    foreach (static::FIELDS as $key => $value) {
+    foreach (static::getFields() as $key => $value) {
       $createAction = $createAction->addValue($key, $value);
     }
 
@@ -47,4 +47,16 @@ abstract class CiviEntitySettings
 
   // Abstract method to return the correct Entity class
   abstract protected static function getEntity();
+
+  // Getter method for the fields
+  protected static function getFields()
+  {
+    if (!isset(static::$fields)) {
+      static::$fields = static::computeFields(); // Compute fields if not already set
+    }
+    return static::$fields;
+  }
+
+  // Abstract method to define the logic to compute the fields
+  abstract protected static function computeFields();
 }
