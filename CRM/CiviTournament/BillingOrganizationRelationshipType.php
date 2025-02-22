@@ -9,12 +9,13 @@
  */
 
 require_once('CiviEntitySettings.php');
+require_once('BillingOrganizationContactType.php');
 
 class BillingOrganizationRelationshipType extends CiviEntitySettings
 {
   protected static function computeFields()
   {
-    $billingOrganizationContactTupe = BillingOrganizationContactType::get();
+    $billingOrganizationContactTypeName = BillingOrganizationContactType::get()['name'];
 
     return [
       'name_a_b' => 'Billing Contact for',
@@ -23,7 +24,7 @@ class BillingOrganizationRelationshipType extends CiviEntitySettings
       'label_b_a' => 'Billing Organization for',
       'description' => 'Relationship between a Billing Contact and their associated Billing Organization.',
       'contact_type_a' => 'Individual',
-      'contact_type_b' => 'Billing_Organization',
+      'contact_type_b' => $billingOrganizationContactTypeName,
       'contact_sub_type_b' => '',
       'is_active' => TRUE,
       'is_reserved' => FALSE
