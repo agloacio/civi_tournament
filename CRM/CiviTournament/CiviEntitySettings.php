@@ -32,6 +32,19 @@ abstract class CiviEntitySettings
     return static::create();
   }
 
+  // Abstract method to return the correct Entity class
+  abstract protected static function getEntity();
+
+  // Getter method for the fields
+  protected static function getFields()
+  {
+    static::$fields = static::computeFields(); 
+    return static::$fields;
+  }
+
+  // Abstract method to define the logic to compute the fields
+  abstract protected static function computeFields();
+
   private static function create()
   {
     $createAction = static::getEntity()::create(TRUE); // Use late static binding
@@ -44,19 +57,4 @@ abstract class CiviEntitySettings
 
     return $results[0];
   }
-
-  // Abstract method to return the correct Entity class
-  abstract protected static function getEntity();
-
-  // Getter method for the fields
-  protected static function getFields()
-  {
-    if (!isset(static::$fields)) {
-      static::$fields = static::computeFields(); // Compute fields if not already set
-    }
-    return static::$fields;
-  }
-
-  // Abstract method to define the logic to compute the fields
-  abstract protected static function computeFields();
 }

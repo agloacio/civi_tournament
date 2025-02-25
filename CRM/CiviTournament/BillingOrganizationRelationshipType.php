@@ -15,8 +15,6 @@ class BillingOrganizationRelationshipType extends CiviEntitySettings
 {
   protected static function computeFields()
   {
-    $billingOrganizationContactTypeName = BillingOrganizationContactType::get()['name'];
-
     return [
       'name_a_b' => 'Billing Contact for',
       'label_a_b' => 'Billing Contact for',
@@ -24,7 +22,7 @@ class BillingOrganizationRelationshipType extends CiviEntitySettings
       'label_b_a' => 'Billing Organization for',
       'description' => 'Relationship between a Billing Contact and their associated Billing Organization.',
       'contact_type_a' => 'Individual',
-      'contact_type_b' => $billingOrganizationContactTypeName,
+      'contact_type_b' => 'Organization',
       'contact_sub_type_b' => '',
       'is_active' => TRUE,
       'is_reserved' => FALSE

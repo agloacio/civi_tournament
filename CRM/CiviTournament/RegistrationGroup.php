@@ -1,13 +1,15 @@
 <?php
 
 /**
- * RegistrationGroup short summary.
+ * Group of contacts registered together
  *
- * RegistrationGroup description.
+ * For competition-type events, participants are usually registered as a group, especially for billing purposes.
  *
  * @version 1.0
  * @author msteigerwald
  */
+require_once("RegistrationGroupType.php");
+
 class RegistrationGroup extends TournamentObject
 {
   /**
@@ -22,12 +24,14 @@ class RegistrationGroup extends TournamentObject
   {
     parent::__construct($id, $name);
   }
+
   public static function getEditableRegistrationGroups($contactId)
   {
+    $registrationGroupTypeId = RegistrationGroupType::get()["value"];
     try {
       $registrationGroups = \Civi\Api4\Group::get()
         ->addSelect('id', 'title')
-        ->addWhere('group_type:label', '=', 'Registration Group')
+        ->addWhere('group_type', '=', $registrationGroupTypeId)
         ->addWhere('is_active', '=', true)
         ->execute();
 
@@ -58,7 +62,7 @@ class RegistrationGroup extends TournamentObject
     }
   }
 
-  function createRegistrationGroup()
+  private function createRegistrationGroup()
   {
     $results = \Civi\Api4\Group::create(TRUE)
       ->addValue('name', 'Example School')
@@ -71,19 +75,6 @@ class RegistrationGroup extends TournamentObject
       ->addValue('parents', [
         2,
       ])
-      ->execute();
-    foreach ($results as $result) {
-      // do something
-    }
-  }
-
-  static function createRegistrationGroupType(){
-    $results = \Civi\Api4\OptionValue::create(TRUE)
-      ->addValue('label', 'Registration Group')
-      ->addValue('name', 'Registration Group')
-      ->addValue('description', 'Registration Group')
-      ->addValue('is_active', TRUE)
-      ->addValue('option_group_id', 22)
       ->execute();
     foreach ($results as $result) {
       // do something
