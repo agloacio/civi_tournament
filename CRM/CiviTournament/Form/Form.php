@@ -72,7 +72,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
       $defaults = $this->_values;
     } else {
-      $defaults = $this->_submitValues;
+      $defaults = $this->getSubmittedValues();//_submitValues;
     }
     return $defaults;
   }
@@ -190,19 +190,18 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     if (in_array('add', $this->urlPath)) {
       $defaultAction = 'add';
     } else
-      $defaultAction = 'update';
+      $defaultAction = 'update';   
    
-   
-    $this->_action = CRM_Utils_Request::retrieve('action', 'String', $this, FALSE, $defaultAction);
+    $this->setAction(CRM_Utils_Request::retrieve('action', 'String', $this, FALSE, $defaultAction));
   }
 
   private function isNewRecord() {
-    return $this->_action == CRM_Core_Action::ADD;
+    return $this->getAction() == CRM_Core_Action::ADD;
   }
 
   private function needsUpdate()
   {
-    return $this->_action == CRM_Core_Action::UPDATE;
+    return $this->getAction() == CRM_Core_Action::UPDATE;
   }
 
   private static function toHtmlElements($apiResult){
