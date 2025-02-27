@@ -1,4 +1,5 @@
 <?php
+use Civi\Api4\Action\GroupContact\Create;
 
 class CRM_CiviTournament_Form extends CRM_Core_Form
 {
@@ -186,7 +187,13 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
   private function initializeAction()
   {
-    $this->_action = CRM_Utils_Request::retrieve('action', 'String', $this, FALSE, 'update');
+    if (in_array('add', $this->urlPath)) {
+      $defaultAction = 'add';
+    } else
+      $defaultAction = 'update';
+   
+   
+    $this->_action = CRM_Utils_Request::retrieve('action', 'String', $this, FALSE, $defaultAction);
   }
 
   private function isNewRecord() {
