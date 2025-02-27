@@ -12,6 +12,11 @@ require_once("RegistrationGroupType.php");
 
 class RegistrationGroup extends TournamentObject
 {
+  public function __construct($id, $name = null)
+  {
+    parent::__construct($id, $name);
+  }
+
   /**
    * Retrieves all "Registration Group" groups that a contact has permission to edit.
    *
@@ -20,11 +25,6 @@ class RegistrationGroup extends TournamentObject
    * @return array An associative array of group IDs and titles, or an empty array if none are found.
    *               Returns an error message string if there's an issue with the API call.
    */
-  public function __construct($id, $name = null)
-  {
-    parent::__construct($id, $name);
-  }
-
   public static function getEditableRegistrationGroups($contactId)
   {
     $registrationGroupTypeId = RegistrationGroupType::get()["value"];
@@ -62,22 +62,16 @@ class RegistrationGroup extends TournamentObject
     }
   }
 
-  private function createRegistrationGroup()
+  public static function create($name)
   {
-    $results = \Civi\Api4\Group::create(TRUE)
-      ->addValue('name', 'Example School')
-      ->addValue('title', 'Example School')
-      ->addValue('description', 'Example School')
+    $group_type = RegistrationGroupType::get()["value"];
+
+    \Civi\Api4\Group::create(TRUE)
+      ->addValue('name', $name)
+      ->addValue('title', $name)
+      ->addValue('description', $name)
       ->addValue('is_active', TRUE)
-      ->addValue('group_type', [
-        3,
-      ])
-      ->addValue('parents', [
-        2,
-      ])
+      ->addValue('group_type', [$group_type])
       ->execute();
-    foreach ($results as $result) {
-      // do something
-    }
   }
 }
