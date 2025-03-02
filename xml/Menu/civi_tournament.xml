@@ -18,4 +18,9 @@
 		<title>Billing Organization</title>
 		<access_arguments>access CiviCRM</access_arguments>
 	</item>
+	<item>
+		<path>civicrm/tournament/account_request</path>
+		<page_callback>CRM_CiviTournament_Form_AccountRequest</page_callback>
+		<title>Account Request</title>
+	</item>
 </menu>
