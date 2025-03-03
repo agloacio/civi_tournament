@@ -21,7 +21,7 @@ class CRM_CiviTournament_Form_AccountRequest extends CRM_Core_Form {
   )
   {
     $this->_method = $method;
-    parent::__construct($state, $action, $method, $name);
+    parent::__construct($state, $action ?? CRM_Core_Action::ADD, $method, $name);
   }
 
   public function buildQuickForm() {
