@@ -18,7 +18,6 @@ class User extends Person
 
     parent::__construct($id);
     $this->_billingOrganizations = BillingOrganization::getBillingOrganizations($this->_id);
-
     $this->_registrationGroups = RegistrationGroup::getEditableRegistrationGroups($this->_id);
   }
 }
