@@ -5,14 +5,14 @@ require_once "Field.php";
 /**
  * Billing Organization Form controller class
  *
- * Create/Update Billing Organizations.
+ * Create/Update Organizations.
  * 
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  *
  * @version 1.0
  * @author msteigerwald
  */
-class CRM_CiviTournament_Form_BillingOrganization extends CRM_CiviTournament_Form_Contact
+class CRM_CiviTournament_Form_Organization extends CRM_CiviTournament_Form_Contact
 {
   public function __construct($state, $action, $method, $name)
   {

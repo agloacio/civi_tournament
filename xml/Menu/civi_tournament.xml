@@ -14,7 +14,7 @@
 	</item>
 	<item>
 		<path>civicrm/tournament/billing_organization</path>
-		<page_callback>CRM_CiviTournament_Form_BillingOrganization</page_callback>
+		<page_callback>CRM_CiviTournament_Form_Organization</page_callback>
 		<title>Billing Organization</title>
 		<access_arguments>access CiviCRM</access_arguments>
 	</item>
