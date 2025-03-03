@@ -1,0 +1,1 @@
+{include file="CRM/CiviTournament/Form/Form.tpl"}

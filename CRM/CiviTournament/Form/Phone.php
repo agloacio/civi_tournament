@@ -2,19 +2,19 @@
 require_once "Form.php";
 require_once "Field.php";
 
-use \Civi\Api4\Address as Entity;
+use \Civi\Api4\Phone as Entity;
 
 /**
- * Address Form controller class
+ * Phone # Form controller class
  *
- * Create/Update Addresses.
+ * Create/Update Phone #s.
  * 
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  *
  * @version 1.0
  * @author msteigerwald
  */
-class CRM_CiviTournament_Form_Address extends CRM_CiviTournament_Form
+class CRM_CiviTournament_Form_Phone extends CRM_CiviTournament_Form
 {
   public function __construct($state, $action, $method, $name)
   {
@@ -27,19 +27,15 @@ class CRM_CiviTournament_Form_Address extends CRM_CiviTournament_Form
       new Field($entity, 'location_type_id', 'location_type_id', 'Hidden', TRUE),
       new Field($entity, 'is_primary', 'Is primary?', 'Hidden', TRUE),
       new Field($entity, 'is_billing', 'Is billing?', 'Hidden', TRUE),
-      new Field($entity, 'street_address', 'Address', 'Text', TRUE),
-      new Field($entity, 'supplemental_address_1', 'Address (cont.)', 'Text', FALSE),
-      new Field($entity, 'city', 'City', 'Text', TRUE),
-      new Field($entity, 'country_id', 'Country', CRM_CiviTournament_Form::COUNTRY_SELECT, FALSE),
-      new Field($entity, 'state_province_id', 'State', CRM_CiviTournament_Form::STATE_PROVINCE_SELECT, TRUE),
-      new Field($entity, 'postal_code', 'Postal Code', 'Text', TRUE),
-      new Field($entity, 'postal_code_suffix', 'Suffix', 'Text', FALSE)
+      new Field($entity, 'phone_type_id', 'phone_type_id', 'Hidden', TRUE),
+      new Field($entity, 'phone', 'Phone #', 'Text', TRUE),
+      new Field($entity, 'phone_ext', 'Extension', 'Text', TRUE)
     );
   }
 
   public function getDefaultEntity()
   {
-    return 'address';
+    return 'phone';
   }
 
 

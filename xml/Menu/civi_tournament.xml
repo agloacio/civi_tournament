@@ -25,6 +25,18 @@
 		<access_arguments>access CiviCRM</access_arguments>
 	</item>
 	<item>
+		<path>civicrm/tournament/email</path>
+		<page_callback>CRM_CiviTournament_Form_Email</page_callback>
+		<title>Address</title>
+		<access_arguments>access CiviCRM</access_arguments>
+	</item>
+	<item>
+		<path>civicrm/tournament/phone</path>
+		<page_callback>CRM_CiviTournament_Form_Phone</page_callback>
+		<title>Address</title>
+		<access_arguments>access CiviCRM</access_arguments>
+	</item>
+	<item>
 		<path>civicrm/tournament/account_request</path>
 		<page_callback>CRM_CiviTournament_Form_AccountRequest</page_callback>
 		<title>Account Request</title>
