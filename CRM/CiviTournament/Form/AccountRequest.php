@@ -1,7 +1,4 @@
 <?php
-use const Civi\WorkflowMessage\Traits\ADDRESS_EXPORT_FMT;
-require_once "Person.php";
-require_once "BillingOrganization.php";
 
 /**
  * CRM_CiviTournament_Form_AccountRequest lets a new user apply for an account.
@@ -20,61 +17,49 @@ class CRM_CiviTournament_Form_AccountRequest extends CRM_Core_Form {
     $name = NULL
   )
   {
-    $this->_method = $method;
-    parent::__construct($state, $action, $method, $name);
+    parent::__construct($state, $action ?? CRM_Core_Action::ADD, $method, $name);
   }
 
   public function buildQuickForm() {
-    // Instantiate subforms
-    $this->_personSubForm = new CRM_CiviTournament_Form_Person($this->getState(), $this->getAction(), $this->_method, $this->getName());
-    $this->_billingOrgSubForm = new CRM_CiviTournament_Form_BillingOrganization($this->getState(), $this->getAction(), $this->_method, $this->getName());
+    $required = true;
+    $attributes = null;
+    $extra['placeholder'] = 'Your Email';
+    $this->add('text', 'email', ts('Email'), $attributes, $required, $extra);
+    $this->add('text', 'organizationName', ts('Organization Name (e.g., School or School District)'), $attributes, $required, $extra);
 
-    //build the subforms.
-    $this->_personSubForm->buildQuickForm();
-    $this->_billingOrgSubForm->buildQuickForm();
+    $this->applyFilter('__ALL__', 'trim');
+    $this->addButtons(array(
+      array(
+        'type' => 'submit',
+        'name' => ts('Save'),
+        'isDefault' => TRUE,
+      ),
+    ));
 
-    // Assign subforms to the template
-    $this->assign('personSubForm', $this->_personSubForm);
-    $this->assign('billingOrgSubForm', $this->_billingOrgSubForm);
+    // export form elements
+    $this->assign('elementNames', $this->getRenderableElementNames());
 
-    // Add other elements specific to AccountRequest
-    $this->add('text', 'account_name', ts('Account Name'));
-
-    parent::buildQuickForm();
+    //parent::buildQuickForm();
   }
-
-  //public function setDefaults() {
-  //  $defaults = parent::getDefaults();
-
-  //  // Set defaults for the Person subform if needed
-  //  $defaults['person'] = [
-  //      'first_name' => 'John', // Example default
-  //      'last_name' => 'Doe',
-  //  ];
-
-  //  // Set defaults for the Billing Organization subform if needed
-  //  $defaults['billing_organization'] = [
-  //      'organization_name' => 'Example Corp', // Example default
-  //  ];
-
-  //  $this->setDefaults($defaults);
-  //}
 
   public function postProcess() {
     $values = $this->controller->exportValues($this->getName());
-
-    // Access data from subforms
-    $personValues = $values['person'];
-    $billingOrgValues = $values['billing_organization'];
-    $accountName = $values['account_name'];
-
-    // Process the data (e.g., save to the database)
-    // ...
-
     parent::postProcess();
   }
 
-  private $_method = 'post';
-  private $_personSubForm;
-  private $_billingOrgSubForm;
+  private function getRenderableElementNames()
+  {
+    // The _elements list includes some items which should not be
+    // auto-rendered in the loop -- such as "qfKey" and "buttons".  These
+    // items don't have labels.  We'll identify renderable by filtering on
+    // the 'label'.
+    $elementNames = array();
+    foreach ($this->_elements as $element) {
+      $label = $element->getLabel();
+      if (!empty($label)) {
+        $elementNames[] = $element->getName();
+      }
+    }
+    return $elementNames;
+  }
 }

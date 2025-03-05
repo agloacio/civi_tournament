@@ -15,7 +15,10 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
   public function preProcess()
   {
-    $this->initializeAction();
+    if (!$this->getAction()) {
+      $this->initializeAction();
+    }
+
     $submittedId = $this->getSubmitValue("id");
     if ($submittedId === null) {
       if ($this->isNewRecord()) {
@@ -99,6 +102,11 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
       }
     }
     return $elementNames;
+  }
+
+  protected function getId()
+  {
+    $this->_id = $this->_id ?? $this->getSubmitValue("id") ?? CRM_Utils_Request::retrieve('id', 'Positive');
   }
 
   protected function reloadExistingRecord()
@@ -205,12 +213,14 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
   }
 
   private static function toHtmlElements($apiResult){
-    return array_combine(
-      array_map(function ($key) {
-        return self::toHtmlElement($key);
-      }, array_keys($apiResult)),
-      array_values($apiResult)
-    );
+    if ($apiResult) {
+      return array_combine(
+        array_map(function ($key) {
+          return self::toHtmlElement($key);
+        }, array_keys($apiResult)),
+        array_values($apiResult)
+      );
+    }
   }
 
   private static function toHtmlElement($key) {
