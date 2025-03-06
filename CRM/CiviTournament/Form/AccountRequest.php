@@ -22,16 +22,13 @@ class CRM_CiviTournament_Form_AccountRequest extends CRM_Core_Form {
   }
 
   public function buildQuickForm() {
-    $required = true;
-    $attributes = null;
-    $extra['placeholder'] = 'Your Email';
-    $this->add('text', 'email', ts('Email'), $attributes, $required, $extra);
-    $this->add('text', 'organizationName', ts('Organization Name (e.g., School or School District)'), $attributes, $required, $extra);
+    $required = true;  
+
+    $this->add('text', 'email', ts('Email'), array('placeholder' => ts('Your Email')), $required);
+    $this->add('text', 'organizationName', ts('Organization Name (e.g., School or School District)'), array('placeholder' => ts('School or District Name')), $required);
 
     $genders = Genders::get();
-    $this->add('select', 'gender_id', ts('Gender'), $genders, $required);
-
-    //$this->addElement('select', 'gender_id', ts('Gender'), $genders);
+    $this->add('select', 'gender_id', ts('Gender'), $genders);
 
     $this->applyFilter('__ALL__', 'trim');
     $this->addButtons(array(
