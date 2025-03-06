@@ -60,7 +60,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     $this->_updateAction->execute();
 
     $session = CRM_Core_Session::singleton();
-    $session->setStatus($this->_recordName, "$this->_name Saved", 'success');
+    $session->setStatus($this->_recordName, "$this->getName() Saved", 'success');
 
     $this->updateTitle();
   }
@@ -121,13 +121,13 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
     // Check if record was found
     if (!$apiResults) {
-      CRM_Core_Error::statusBounce(ts("Could not find $this->_name with id = $this->_id"));
+      CRM_Core_Error::statusBounce(ts("Could not find $this->getName() with id = $this->_id"));
     }
 
     $this->_values = self::toHtmlElements($apiResults[0]);
 
     if (empty($this->_values['id'])) {
-      CRM_Core_Error::statusBounce(ts("Could not find $this->_name with id = $this->_id"));
+      CRM_Core_Error::statusBounce(ts("Could not find $this->getName() with id = $this->_id"));
     }
 
     if (!CRM_Core_Permission::check('edit ' . $this->getDefaultEntity() . 's', $this->_id)) {
@@ -157,7 +157,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
       CRM_Utils_System::civiExit();
     }
 
-    $this->setTitle(ts('New %1', [1 => $this->_name]));
+    $this->setTitle(ts('New %1', [1 => $this->getName()]));
 
     $session = CRM_Core_Session::singleton();
     $session->pushUserContext(CRM_Utils_System::url('civicrm/dashboard', 'reset=1'));
