@@ -28,7 +28,7 @@ class CRM_CiviTournament_Form_AccountRequest extends CRM_Core_Form {
     $this->add('text', 'organizationName', ts('Organization Name (e.g., School or School District)'), array('placeholder' => ts('School or District Name')), $required);
 
     $genders = Genders::get();
-    $this->add('select', 'gender_id', ts('Gender'), $genders);
+    $this->add('select', 'gender_id', ts('Gender'), array_merge([0 => '-- Select Gender --'], $genders));
 
     $this->applyFilter('__ALL__', 'trim');
     $this->addButtons(array(
