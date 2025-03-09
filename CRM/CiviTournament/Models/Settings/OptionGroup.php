@@ -8,16 +8,16 @@
  * @author steig
  */
 
-require_once('CiviEntitySettings.php');
+require_once('Settings.php');
 
-class GenderOptionGroup extends CiviEntitySettings
+class OptionGroup extends Settings
 {
   protected static function computeFields()
   {
     return [
-      'name' => 'gender',
-      'title' => 'Gender',
-      'description' => null,
+      'name' => self::$_name,
+      'title' => self::$_title,
+      'description' => self::$_description,
       'is_active' => TRUE,
       'is_reserved' => TRUE
     ];
@@ -25,11 +25,15 @@ class GenderOptionGroup extends CiviEntitySettings
 
   public static function addWhere($getAction)
   {
-    return $getAction->addWhere('title', '=', 'Gender');
+    return $getAction->addWhere('name', '=', self::$_name);
   }
 
   protected static function getEntity()
   {
     return \Civi\Api4\OptionGroup::class;
   }
+
+  protected $_name;
+  protected $_title;
+  protected $_description;
 }

@@ -8,9 +8,9 @@
  * @author steig
  */
 
-require_once('CiviEntitySettings.php');
+require_once('Settings.php');
 
-class GroupTypeOptionGroup extends CiviEntitySettings
+class GroupTypeOptionGroup extends Settings
 {
   protected static function computeFields()
   {

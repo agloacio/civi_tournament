@@ -8,10 +8,10 @@
  * @author steig
  */
 
-require_once('CiviEntitySettings.php');
+require_once('Settings.php');
 require_once('BillingOrganizationContactType.php');
 
-class BillingOrganizationRelationshipType extends CiviEntitySettings
+class BillingOrganizationRelationshipType extends Settings
 {
   protected static function computeFields()
   {

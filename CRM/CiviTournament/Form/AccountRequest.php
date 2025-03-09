@@ -1,5 +1,5 @@
 <?php
-require_once "CRM/CiviTournament/Genders.php";
+require_once "CRM/CiviTournament/Models/Settings/Genders.php";
 
 /**
  * CRM_CiviTournament_Form_AccountRequest lets a new user apply for an account.
@@ -27,8 +27,9 @@ class CRM_CiviTournament_Form_AccountRequest extends CRM_Core_Form {
     $this->add('text', 'email', ts('Email'), array('placeholder' => ts('Your Email')), $required);
     $this->add('text', 'organizationName', ts('Organization Name (e.g., School or School District)'), array('placeholder' => ts('School or District Name')), $required);
 
-    $genders = Genders::get();
-    $this->add('select', 'gender_id', ts('Gender'), array_merge([0 => '-- Select Gender --'], $genders));
+    $this->add('select', 'gender_id', ts('Gender'), array_merge([0 => '-- Select Gender --'], Genders::get()));
+
+
 
     $this->applyFilter('__ALL__', 'trim');
     $this->addButtons(array(

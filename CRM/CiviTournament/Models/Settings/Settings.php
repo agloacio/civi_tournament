@@ -3,12 +3,12 @@
 /**
  * Creates and retrieves settings for CiviTournament Extension
  *
- * This class contains the common logic.  It's declared abstract because it shouldn't be instantiated directly.
+ * This class contains common logic.  It's declared abstract because it shouldn't be instantiated directly.
  *
  * @version 1.0
  * @author msteigerwald
  */
-abstract class CiviEntitySettings
+abstract class Settings
 {
   protected static $fields; // Static property
 
