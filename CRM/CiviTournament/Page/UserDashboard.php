@@ -1,7 +1,7 @@
 <?php
 use CRM_CiviTournament_ExtensionUtil as E;
 
-require_once "CRM/CiviTournament/User.php";
+require_once "CRM/CiviTournament/Models/User.php";
 
 class CRM_CiviTournament_Page_UserDashboard extends CRM_Core_Page
 {
