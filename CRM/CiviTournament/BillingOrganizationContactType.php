@@ -15,7 +15,7 @@ class BillingOrganizationContactType extends CiviEntitySettings
     $contactTypes = \Civi\Api4\ContactType::get(TRUE)
       ->addSelect('id')
       ->addWhere('label', '=', 'Organization')
-      ->setLimit(25)
+      ->setLimit(1)
       ->execute();
     foreach ($contactTypes as $contactType) {
       $parent_id = $contactType["id"];
