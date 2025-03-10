@@ -8,7 +8,7 @@
  * @version 1.0
  * @author msteigerwald
  */
-require_once("RegistrationGroupType.php");
+require_once("Settings/RegistrationGroupType.php");
 
 class RegistrationGroup extends TournamentObject
 {

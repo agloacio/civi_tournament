@@ -8,10 +8,10 @@
  * @author steig
  */
 
-require_once('CiviEntitySettings.php');
+require_once('Settings.php');
 require_once('GenderOptionGroup.php');
 
-class Genders extends CiviEntitySettings
+class Genders extends Settings
 {
   /**
    * Retrieves all Genders.

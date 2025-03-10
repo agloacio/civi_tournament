@@ -1,6 +1,6 @@
 <?php
+require_once "CRM/CiviTournament/Session.php";
 require_once "TournamentObject.php";
-require_once "Session.php";
 require_once "Person.php";
 require_once "BillingOrganization.php";
 require_once "RegistrationGroup.php";

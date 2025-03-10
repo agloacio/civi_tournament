@@ -7,8 +7,8 @@
  * @version 1.0
  * @author steig
  */
-require_once('CiviEntitySettings.php');
-class BillingOrganizationContactType extends CiviEntitySettings
+require_once('Settings.php');
+class BillingOrganizationContactType extends Settings
 {
   protected static function computeFields()
   {
