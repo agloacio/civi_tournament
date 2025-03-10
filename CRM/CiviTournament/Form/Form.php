@@ -60,7 +60,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     $this->_updateAction->execute();
 
     $session = CRM_Core_Session::singleton();
-    $session->setStatus($this->_recordName, "$this->getName() Saved", 'success');
+    $session->setStatus($this->_recordName, "$this->_name Saved", 'success');
 
     $this->updateTitle();
   }

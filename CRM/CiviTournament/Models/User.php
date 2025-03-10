@@ -7,10 +7,12 @@ require_once "RegistrationGroup.php";
 
 class User extends Person
 {
-  public $_billingOrganizations;
-  public $_registrationGroups;
+  /** @var BillingOrganization $_billingOrganizations */
 
-  public function __construct($id = null)
+  public array $_billingOrganizations;
+  public array $_registrationGroups;
+
+  public function __construct(?int $id = null)
   {
     if (empty($id)) {
       $id = Session::getLoggedInContactID();

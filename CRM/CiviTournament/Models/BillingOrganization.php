@@ -11,16 +11,18 @@ require_once("Settings/BillingOrganizationRelationshipType.php");
  */
 class BillingOrganization extends TournamentObject
 {
-  public function __construct($id, $name = null)
+  public function __construct(?int $id, ?string $name = null)
   {
     parent::__construct($id, $name);
   }
 
-  public static function getBillingOrganizations($personId)
+  public static function getBillingOrganizations(int $personId)
   {
+    /** @var int $billingOrganizationRelationshipTypeID */
     $billingOrganizationRelationshipTypeID = BillingOrganizationRelationshipType::get()["id"];
 
     if ($billingOrganizationRelationshipTypeID) {
+      /** @var array $entities */
       $entities = \Civi\Api4\Relationship::get(FALSE)
         ->addSelect('contact_id_b', 'contact_id_b.display_name')
         ->addWhere('contact_id_a', '=', $personId)
