@@ -26,19 +26,22 @@ class CRM_CiviTournament_Form_AccountRequest extends CRM_Core_Form {
 
     $this->add('text', 'email', ts('Email'), array('placeholder' => ts('Your Email')), $required);
     $this->add('text', 'organizationName', ts('Organization Name (e.g., School or School District)'), array('placeholder' => ts('School or District Name')), $required);
-
+    $this->add('text', 'firstName', ts('First Name'), array('placeholder' => ts('First Name')), $required);
+    $this->add('text', 'lastName', ts('Last Name'), array('placeholder' => ts('Last Name')), $required);
     $this->add('select', 'gender_id', ts('Gender'), array_merge([0 => '-- Select Gender --'], Genders::get()));
-
-
+    $this->add('text', 'address', ts('Address'), array('placeholder' => ts('Address')), $required);
+    $this->add('text', 'city', ts('City'), array('placeholder' => ts('City')), $required);
+    $this->add('text', 'postalCode', ts('Zip'), array('placeholder' => ts('Zip')), $required);
+    $this->add('text', 'phone', ts('Phone'), array('placeholder' => ts('Phone')), $required);
 
     $this->applyFilter('__ALL__', 'trim');
-    $this->addButtons(array(
-      array(
+    $this->addButtons([
+      [
         'type' => 'submit',
         'name' => ts('Save'),
         'isDefault' => TRUE,
-      ),
-    ));
+      ],
+    ]);
 
     // export form elements
     $this->assign('elementNames', $this->getRenderableElementNames());
