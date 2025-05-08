@@ -1,8 +1,8 @@
 <?php
 /**
- * Persist Settings
+ * Persist Salutations
  *
- * Creates and retrieves RegistrationGender setting for CiviTournament Extension
+ * Creates and retrieves Salutations setting for CiviTournament Extension
  *
  * @version 1.0
  * @author steig
@@ -11,7 +11,7 @@
 require_once('Settings.php');
 require_once('GenderOptionGroup.php');
 
-class Genders extends Settings
+class Salutations extends Settings
 {
   /**
    * Retrieves all Genders.

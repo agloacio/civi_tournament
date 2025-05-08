@@ -32,7 +32,8 @@ class CRM_CiviTournament_Form_AccountRequest extends CRM_Core_Form {
     $this->add('text', 'address', ts('Address'), array('placeholder' => ts('Address')), $required);
     $this->add('text', 'city', ts('City'), array('placeholder' => ts('City')), $required);
     $this->add('text', 'postalCode', ts('Zip'), array('placeholder' => ts('Zip')), $required);
-    $this->add('text', 'phone', ts('Phone'), array('placeholder' => ts('Phone')), $required);
+    $this->add('text', 'phone', ts('Land Line'), array('placeholder' => ts('Land Line')), $required);
+    $this->add('text', 'mobile_phone', ts('Mobile Phone'), array('placeholder' => ts('Mobile Phone')));
 
     $this->applyFilter('__ALL__', 'trim');
     $this->addButtons([

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * common properties for any tournament object
+ * common properties for every tournament object
  *
  * base class that contains an id, name, label and description for objects that will build a tournament management application.
  *
