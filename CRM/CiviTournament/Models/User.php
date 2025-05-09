@@ -7,7 +7,7 @@ require_once "RegistrationGroup.php";
 
 class User extends Person
 {
-  /** @var BillingOrganization $_billingOrganizations */
+  /** @var Organization $_billingOrganizations */
 
   public array $_billingOrganizations;
   public array $_registrationGroups;
@@ -19,7 +19,7 @@ class User extends Person
     }
 
     parent::__construct($id);
-    $this->_billingOrganizations = BillingOrganization::getBillingOrganizations($this->_id);
+    $this->_billingOrganizations = Organization::getBillingOrganizations($this->_id);
     $this->_registrationGroups = RegistrationGroup::getEditableRegistrationGroups($this->_id);
   }
 }
