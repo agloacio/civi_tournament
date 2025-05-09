@@ -2,14 +2,14 @@
 require_once("Settings/BillingOrganizationRelationshipType.php");
 
 /**
- * Billing Organization
+ * School, District, Company, etc.
  *
- * Organization (e.g., School District) responsible for billing.
+ * Non-person Contact.
  *
  * @version 1.0
  * @author steig
  */
-class BillingOrganization extends TournamentObject
+class Organization extends TournamentObject
 {
   public function __construct(?int $id, ?string $name = null)
   {
@@ -32,7 +32,7 @@ class BillingOrganization extends TournamentObject
 
       $billingOrganizations = [];
       foreach ($entities as $entity) {
-        $billingOrganizations[] = new BillingOrganization($entity['contact_id_b'], $entity['contact_id_b.display_name']);
+        $billingOrganizations[] = new Organization($entity['contact_id_b'], $entity['contact_id_b.display_name']);
       }
 
       return $billingOrganizations;
