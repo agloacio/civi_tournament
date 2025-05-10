@@ -2,17 +2,19 @@
 require_once "TournamentObject.php";
 
 /**
- * Person properties, similar to CiviCRM Individual.
+ * Postal Address
  *
- * Person identity characteristics, e.g., name, DOB & gender.
+ * Street, City, Region, PostalCode, etc.
  *
  * @version 1.0
  * @author msteigerwald
  */
-class Person extends TournamentObject
+class Address extends TournamentObject
 {
-  private string $_lastName;
-  private string $_firstName;
+  private string $_streetAddress;
+  private string $_city;
+  private string $_region;
+  private string $_postalCode;
   private ?string $_middleName;
   private ?Gender $_gender;
   private ?DateTime $_birthDate;

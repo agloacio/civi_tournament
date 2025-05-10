@@ -10,7 +10,7 @@
  */
 require_once("Settings/RegistrationGroupType.php");
 
-class RegistrationGroup extends TournamentObject
+class RegistrationGroup extends Group
 {
   public function __construct($id, $name = null)
   {
