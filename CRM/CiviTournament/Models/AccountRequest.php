@@ -1,16 +1,16 @@
 <?php
 
 /**
- * AccountRequest short summary.
+ * Primary contact, organization, etc.
  *
- * AccountRequest description.
+ * Required properties for creating an account to access our system.
  *
  * @version 1.0
  * @author steig
  */
 class AccountRequest extends TournamentObject
 {
-  private Person $_person;
+  private Person $_primaryContact;
   private Organization $_billingOrganization;
   private EmailAddress $_email;
   private PhoneNumber $_landLine;
