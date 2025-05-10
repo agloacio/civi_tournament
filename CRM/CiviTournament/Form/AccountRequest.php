@@ -1,4 +1,7 @@
 <?php
+use Civi\Api4\Address;
+use Civi\Api4\Email;
+use Civi\Api4\Phone;
 require_once "CRM/CiviTournament/Models/Settings/Genders.php";
 require_once "CRM/CiviTournament/Models/Settings/Salutations.php";
 require_once "CRM/CiviTournament/Models/Settings/Generations.php";
@@ -12,7 +15,13 @@ require_once "CRM/CiviTournament/Models/Settings/Generations.php";
  * @author msteigerwald
  */
 
-class CRM_CiviTournament_Form_AccountRequest extends CRM_Core_Form {
+class CRM_CiviTournament_Form_AccountRequest extends CRM_CiviTournament_Form {
+  private Person $_personForm;
+  private Address $_addressForm;
+  private Phone $_landlineForm;
+  private Phone $_mobileForm;
+  private Email $_emailForm;
+
   public function __construct(
     $state = NULL,
     $action = CRM_Core_Action::ADD,
@@ -57,39 +66,10 @@ class CRM_CiviTournament_Form_AccountRequest extends CRM_Core_Form {
     $this->add('text', 'phone', ts('Landline'), array('placeholder' => ts('Phone')), $required);
     $this->add('text','mobile_phone', ts('Mobile Phone'), array('title' => ts('How can we reach you at the tournament?')));
 
-    $this->applyFilter('__ALL__', 'trim');
-    $this->addButtons([
-      [
-        'type' => 'submit',
-        'name' => ts('Save'),
-        'isDefault' => TRUE,
-      ],
-    ]);
-
-    // export form elements
-    $this->assign('elementNames', $this->getRenderableElementNames());
-
-    //parent::buildQuickForm();
+    parent::buildQuickForm();
   }
 
   public function postProcess() {
-    $values = $this->controller->exportValues($this->getName());
     parent::postProcess();
-  }
-
-  private function getRenderableElementNames()
-  {
-    // The _elements list includes some items which should not be
-    // auto-rendered in the loop -- such as "qfKey" and "buttons".  These
-    // items don't have labels.  We'll identify renderable by filtering on
-    // the 'label'.
-    $elementNames = array();
-    foreach ($this->_elements as $element) {
-      $label = $element->getLabel();
-      if (!empty($label)) {
-        $elementNames[] = $element->getName();
-      }
-    }
-    return $elementNames;
   }
 }
