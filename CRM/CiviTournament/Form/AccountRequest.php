@@ -12,7 +12,14 @@ require_once "CRM/CiviTournament/Models/Settings/Generations.php";
  * @author msteigerwald
  */
 
-class CRM_CiviTournament_Form_AccountRequest extends CRM_Core_Form {
+class CRM_CiviTournament_Form_AccountRequest extends CRM_CiviTournament_Form {
+  private CRM_CiviTournament_Form_Person $_primaryContact;
+  private CRM_CiviTournament_Form_Organization $_billingOrganization;
+  private CRM_CiviTournament_Form_Email $_email;
+  private CRM_CiviTournament_Form_Phone $_landLine;
+  private CRM_CiviTournament_Form_Phone $_mobilePhone;
+  private CRM_CiviTournament_Form_Address $_billingAddress;
+
   public function __construct(
     $state = NULL,
     $action = CRM_Core_Action::ADD,
