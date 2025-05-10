@@ -1,9 +1,7 @@
 <?php
 require_once "TournamentObject.php";
 
-use Civi\Api4\Generic\Traits\DAOActionTrait;
 use \Civi\Api4\Individual as Entity;
-use LDAP\Result;
 
 /**
  * Person properties, similar to CiviCRM Individual.
@@ -20,8 +18,8 @@ class Person extends TournamentObject
   public string $_lastName;
   public $_gender;
   public ?DateTime $_birthDate;
-  public $_prefix;
-  public $_suffix;
+  public ?string $_prefix;
+  public ?string $_suffix;
 
   public function __construct(?int $id = null){
     parent::__construct($id);

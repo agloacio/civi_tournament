@@ -171,14 +171,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     } catch (Exception $e) {
       switch ($type) {
         case self::COUNTRY_SELECT: {
-          $countries = CRM_Core_PseudoConstant::country();
-          $this->add('select', $elementName, $label ?? $elementName, $countries, $required, array(
-            'empty_value' => ' ',
-            'onchange' => 'CRM_CiviTournament_Form.loadStates(this.value, \'address_primary_state_province_id\')'
-          ));
-
-          CRM_Core_Resources::singleton()->addScriptFile('civi_tournament', 'js/CRM_CiviTournament_Form.js');
-
+          $this->addCountrySelect($elementName, $label, $required);
           break;
         }
         case self::STATE_PROVINCE_SELECT: {
@@ -191,6 +184,16 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
         }
       }
     }
+  }
+
+  private function addCountrySelect($name, $label, $required) {
+    $countries = CRM_Core_PseudoConstant::country();
+    $this->add('select', $name, $label ?? $name, $countries, $required, array(
+      'empty_value' => ' ',
+      'onchange' => 'CRM_CiviTournament_Form.loadStates(this.value, \'address_primary_state_province_id\')'
+    ));
+
+    CRM_Core_Resources::singleton()->addScriptFile('civi_tournament', 'js/CRM_CiviTournament_Form.js');
   }
 
   private function initializeAction()

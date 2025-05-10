@@ -34,7 +34,7 @@ class Field
   private function defaultLabel()
   {
     $token = str_contains($this->_name, '_id') ? str_replace('_id', '', $this->_name) : $this->_name;
-    return Field::capitalizeWords($token);
+    return self::capitalizeWords($token);
   }
 
   private static function capitalizeWords($string)
