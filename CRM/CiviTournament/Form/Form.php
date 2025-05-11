@@ -1,5 +1,4 @@
 <?php
-use Civi\Api4\Action\GroupContact\Create;
 
 class CRM_CiviTournament_Form extends CRM_Core_Form
 {
@@ -31,8 +30,10 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
   public function buildQuickForm()
   {
-    foreach ($this->_fields as $field) {
-      $this->addFieldElement($field->_name, $field->_type, $field->_props, $field->_required, $field->_label);
+    if ($this->_fields) {
+      foreach ($this->_fields as $field) {
+        $this->addFieldElement($field->_name, $field->_type, $field->_props, $field->_required, $field->_label);
+      }
     }
 
     $this->applyFilter('__ALL__', 'trim');
