@@ -9,7 +9,7 @@ require_once "CRM/CiviTournament/Models/Settings/Generations.php";
 /**
  * CRM_CiviTournament_Form_AccountRequest lets a new user apply for an account.
  *
- * An account combines an individual, an organization and a registration group. If approved the indivdial gets full access to the organizationa and all contacts in the registration group.
+ * An account combines an individual, an organization and a registration group. If approved, the indivdial gets full access to the organizationa and all contacts in the registration group.
  *
  * @version 1.0
  * @author msteigerwald
@@ -71,5 +71,11 @@ class CRM_CiviTournament_Form_AccountRequest extends CRM_CiviTournament_Form {
 
   public function postProcess() {
     parent::postProcess();
+  }
+
+
+  public function getDefaultEntity()
+  {
+    return 'contact';
   }
 }
