@@ -1,25 +1,26 @@
 <?php
-require_once "CRM/CiviTournament/Session.php";
-require_once "TournamentObject.php";
-require_once "Person.php";
-require_once "BillingOrganization.php";
-require_once "RegistrationGroup.php";
+ {
+  require_once "Person.php";
 
-class User extends Person
-{
-  /** @var Organization $_billingOrganizations */
-
-  public array $_billingOrganizations;
-  public array $_registrationGroups;
-
-  public function __construct(?int $id = null)
+  class User extends TournamentObject
   {
-    if (empty($id)) {
-      $id = Session::getLoggedInContactID();
+    private Person $_person;
+    private ?array $_billingOrganizations;
+    private ?array $_registrationGroups;
+
+    public function __construct(Person $person, array $billingOrganizations = null, array $registrationGroups = null) {
+      parent::__construct($person->_id, $person->_name, $person->_label, $person->_description);
+      $this->_person = $person;
+      $this->_billingOrganizations = $billingOrganizations;
+      $this->_registrationGroups = $registrationGroups;
     }
 
-    parent::__construct($id);
-    $this->_billingOrganizations = Organization::getBillingOrganizations($this->_id);
-    $this->_registrationGroups = RegistrationGroup::getEditableRegistrationGroups($this->_id);
+    public function __get($name)
+    {
+      if ($name === 'billingOrganizations') {
+        return $this->_billingOrganizations;
+      }
+      return null;
+    }
   }
-}
+ }
