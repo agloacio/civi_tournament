@@ -7,7 +7,7 @@ class Session
    *
    * @return int|null The contact ID, or null if the user is not logged in.
    */
-  static function getLoggedInContactID()
+  static function getUserId()
   {
     $session = CRM_Core_Session::singleton();
     return $session->get('userID');
