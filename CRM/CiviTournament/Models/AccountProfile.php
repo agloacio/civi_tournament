@@ -8,7 +8,7 @@
  * @version 1.0
  * @author steig
  */
-class AccountRequest extends TournamentObject
+class AccountProfile extends TournamentObject
 {
   private Person $_primaryContact;
   private Organization $_billingOrganization;
