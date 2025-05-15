@@ -48,6 +48,6 @@ class CRM_CiviTournament_Form_Contact extends CRM_CiviTournament_Form
 
   protected function setRecordName()
   {
-    $this->_recordName = $this->_values['display_name'];
+    $this->_entityLabel = $this->_values['display_name'];
   }
 }

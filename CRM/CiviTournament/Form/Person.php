@@ -41,13 +41,8 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form_Contact
 
   public function postProcess() {
     $this->_values = $this->exportValues();
-    $this->_recordName = $this->displayName();
+    $this->_entityLabel = $this->displayName();
     parent::postProcess();
-  }
-
-  protected function updateTitle()
-  {
-    parent::updateTitle();
   }
 
   private function displayName(){
