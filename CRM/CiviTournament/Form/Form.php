@@ -1,5 +1,4 @@
 <?php
-use Civi\Api4\Action\GroupContact\Create;
 
 class CRM_CiviTournament_Form extends CRM_Core_Form
 {
@@ -10,7 +9,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
   protected $_values;
   protected $_id;
   protected $_fields;
-  protected $_recordName;
+  protected $_entityLabel;
   protected $_updateAction;
 
   public function preProcess()
@@ -21,10 +20,12 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
     $submittedId = $this->getSubmitValue("id");
     if ($submittedId === null) {
-      if ($this->isNewRecord()) {
-        $this->startNewRecord();
-      } else if ($this->needsUpdate()) {
-        $this->reloadExistingRecord();
+      switch ($this->getAction()) {
+        case CRM_Core_Action::UPDATE:
+          $this->getPersistedEntity();
+          break;
+        default:
+          $this->initializeNewEntityCreation();
       }
     }
   }
@@ -60,7 +61,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     $this->_updateAction->execute();
 
     $session = CRM_Core_Session::singleton();
-    $session->setStatus($this->_recordName, "$this->_name Saved", 'success');
+    $session->setStatus($this->_entityLabel, "$this->_name Saved", 'success');
 
     $this->updateTitle();
   }
@@ -109,7 +110,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
     $this->_id = $this->_id ?? $this->getSubmitValue("id") ?? CRM_Utils_Request::retrieve('id', 'Positive');
   }
 
-  protected function reloadExistingRecord()
+  private function getPersistedEntity()
   {
     $getAction = $this->initializeGetSingleRecordAction();
 
@@ -141,15 +142,15 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
 
   protected function setRecordName()
   {
-    $this->_recordName = $this->_values['id'];
+    $this->_entityLabel = $this->_values['id'];
   }
 
   protected function updateTitle()
   {
-    $this->setTitle(ts('Edit %1', [1 => $this->_recordName]));
+    $this->setTitle(ts('Edit %1', [1 => $this->_entityLabel]));
   }
 
-  protected function startNewRecord()
+  private function initializeNewEntityCreation()
   {
     // check for add permissions
     if (!CRM_Core_Permission::check('add ' . $this->getDefaultEntity() . 's')) {
@@ -157,7 +158,7 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
       CRM_Utils_System::civiExit();
     }
 
-    $this->setTitle(ts('New %1', [1 => $this->getName()]));
+    $this->setTitle(ts('New %1', [1 => $this->_entityLabel ?? $this->getName()]));
 
     $session = CRM_Core_Session::singleton();
     $session->pushUserContext(CRM_Utils_System::url('civicrm/dashboard', 'reset=1'));
@@ -204,15 +205,6 @@ class CRM_CiviTournament_Form extends CRM_Core_Form
       $defaultAction = 'update';   
    
     $this->setAction(CRM_Utils_Request::retrieve('action', 'String', $this, FALSE, $defaultAction));
-  }
-
-  private function isNewRecord() {
-    return $this->getAction() == CRM_Core_Action::ADD;
-  }
-
-  private function needsUpdate()
-  {
-    return $this->getAction() == CRM_Core_Action::UPDATE;
   }
 
   private static function toHtmlElements($apiResult){
