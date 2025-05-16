@@ -22,10 +22,10 @@ class Person extends TournamentObject
   private ?Generation $_generation;
   private ?Salutation $_salutation;
 
-  public function __construct(string $lastName, string $firstName, ?string $middleName, ?Gender $gender, ?DateTime $birthDate, ?Generation $generation, ?Salutation $salutation)
+  public function __construct(?int $id, string $lastName, string $firstName, ?string $middleName, ?Gender $gender, ?DateTime $birthDate, ?Generation $generation, ?Salutation $salutation)
   {
     $displayName = $firstName . " " . $middleName . " " . $lastName;
-    parent::__construct(null, $firstName . $lastName, $displayName, $displayName);
+    parent::__construct($id, $firstName . $lastName, $displayName, $displayName);
     $this->_lastName = $lastName;
     $this->_firstName = $firstName;
     $this->_middleName = $middleName;

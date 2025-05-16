@@ -15,7 +15,7 @@ class Mapper
       $generation = new Generation($civi["suffix_id:label"], $civi["suffix_id:label"]);
     if (isset($civi["birth_date"]))
       $birthDate = new DateTime($civi["birth_date"]);
-    $person = new Person($civi["last_name"], $civi["first_name"], $civi["middle_name"], $gender, $birthDate, $generation, $salutation);
+    $person = new Person($civi["id"], $civi["last_name"], $civi["first_name"], $civi["middle_name"], $gender, $birthDate, $generation, $salutation);
     return $person;
   }
 

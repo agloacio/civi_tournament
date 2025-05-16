@@ -15,11 +15,28 @@ abstract class TournamentObject
   public ?string $_label;
   public ?string $_description;
 
-  public function __construct(?int$id, ?string $name = null, ?string $label = null, ?string $description = null)
+  public function __construct(?int $id, ?string $name = null, ?string $label = null, ?string $description = null)
   {
     $this->_id = $id;
     $this->_name = $name;
     $this->_label = $label;
     $this->_description = $description;
+  }
+
+  public function __get($name)
+  {
+    if ($name === 'id') {
+      return $this->_id;
+    }
+    if ($name === 'name') {
+      return $this->_name;
+    }
+    if ($name === 'label') {
+      return $this->_label;
+    }
+    if ($name === 'description') {
+      return $this->_description;
+    }
+    return null;
   }
 }

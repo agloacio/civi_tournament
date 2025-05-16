@@ -20,7 +20,7 @@
       if ($name === 'billingOrganizations') {
         return $this->_billingOrganizations;
       }
-      return null;
+      return parent::__get($name);
     }
   }
  }
