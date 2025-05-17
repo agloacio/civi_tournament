@@ -1,4 +1,5 @@
 <?php
+require_once("TournamentObject.php");
 
 /**
  * Mr., Mrs. etc.
@@ -15,10 +16,10 @@ class Salutation extends TournamentObject
     parent::__construct(null, $name, $label, $description);
   }
 
-  public const Mr = new Salutation("Mr", "Mr.", "Mister");
-  public const Mrs = new Salutation("Mrs", "Mrs.", "Mrs.");
-  public const Ms = new Salutation("Ms", "Ms.", "Ms.");
-  public const Miss = new Salutation("Miss", "Miss", "Miss");
-  public const Dr = new Salutation("Dr", "Dr.", "Doctor");
-  public const Br = new Salutation("Br", "Br.", "Brother");
+  //public const Mr = new Salutation("Mr", "Mr.", "Mister");
+  //public const Mrs = new Salutation("Mrs", "Mrs.", "Mrs.");
+  //public const Ms = new Salutation("Ms", "Ms.", "Ms.");
+  //public const Miss = new Salutation("Miss", "Miss", "Miss");
+  //public const Dr = new Salutation("Dr", "Dr.", "Doctor");
+  //public const Br = new Salutation("Br", "Br.", "Brother");
 }

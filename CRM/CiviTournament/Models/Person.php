@@ -1,5 +1,6 @@
 <?php
 
+require_once("Contact.php");
 require_once("Gender.php");
 require_once("Generation.php");
 require_once("Salutation.php");

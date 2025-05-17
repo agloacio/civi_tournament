@@ -1,4 +1,5 @@
 <?php
+require_once("TournamentObject.php");
 
 /**
  * Male, female, etc.
@@ -15,6 +16,6 @@ class Gender extends TournamentObject
     parent::__construct(null, $name, $label);
   }
 
-  public const Male = new Gender("M", "Male");
-  public const Female = new Gender("F", "Female");
+  //public const Male = new Gender("M", "Male");
+  //public const Female = new Gender("F", "Female");
 }

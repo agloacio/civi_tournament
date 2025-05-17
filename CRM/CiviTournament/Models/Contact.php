@@ -1,4 +1,5 @@
 <?php
+require_once("TournamentObject.php");
 
 /**
  * Base class for Person and Organization.

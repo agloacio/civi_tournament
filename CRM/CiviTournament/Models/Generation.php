@@ -1,4 +1,5 @@
 <?php
+require_once("TournamentObject.php");
 
 /**
  * Jr., Sr., etc.
@@ -15,8 +16,8 @@ class Generation extends TournamentObject
     parent::__construct(null, $name, $label, $description);
   }
 
-  public const Jr = new Generation("Jr", "Jr.", "Junior");
-  public const Sr = new Generation("Sr", "Sr.", "Senior");
-  public const II = new Generation("II", "II", "The Second");
-  public const III = new Generation("III", "III", "The Third");
+  //public const Jr = new Generation("Jr", "Jr.", "Junior");
+  //public const Sr = new Generation("Sr", "Sr.", "Senior");
+  //public const II = new Generation("II", "II", "The Second");
+  //public const III = new Generation("III", "III", "The Third");
 }
