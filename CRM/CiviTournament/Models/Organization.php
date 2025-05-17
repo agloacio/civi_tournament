@@ -8,7 +8,7 @@
  * @version 1.0
  * @author steig
  */
-class Organization extends TournamentObject
+class Organization extends Contact
 {
   public function __construct(?int $id, ?string $name = null)
   {

@@ -12,7 +12,7 @@ require_once("Salutation.php");
  * @version 1.0
  * @author msteigerwald
  */
-class Person extends TournamentObject
+class Person extends Contact
 {
   private string $_lastName;
   private string $_firstName;
