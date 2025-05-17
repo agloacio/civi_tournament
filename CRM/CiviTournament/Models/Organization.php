@@ -10,8 +10,4 @@
  */
 class Organization extends Contact
 {
-  public function __construct(?int $id, ?string $name = null)
-  {
-    parent::__construct($id, $name);
-  }
 }

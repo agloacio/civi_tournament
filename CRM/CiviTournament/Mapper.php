@@ -24,7 +24,7 @@ class Mapper
     $billingOrganizations = array();
 
     foreach ($civiRecords as $civiRecord) {
-      $billingOrganizations[] = new Organization($civiRecord["contact_id_b"], $civiRecord["contact_id_b.display_name"]);
+      $billingOrganizations[] = new Organization($civiRecord["contact_id_b"], $civiRecord["contact_id_b.display_name"], $civiRecord["contact_id_b.display_name"], $civiRecord["contact_id_b.display_name"]);
     }
     return $billingOrganizations;
   }
