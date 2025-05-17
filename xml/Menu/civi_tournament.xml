@@ -13,38 +13,14 @@
 		<access_arguments>access CiviCRM</access_arguments>
 	</item>
 	<item>
-		<path>civicrm/tournament/billing_organization</path>
+		<path>civicrm/tournament/organization</path>
 		<page_callback>CRM_CiviTournament_Form_Organization</page_callback>
 		<title>Billing Organization</title>
 		<access_arguments>access CiviCRM</access_arguments>
 	</item>
 	<item>
-		<path>civicrm/tournament/address</path>
-		<page_callback>CRM_CiviTournament_Form_Address</page_callback>
-		<title>Address</title>
-		<access_arguments>access CiviCRM</access_arguments>
-	</item>
-	<item>
-		<path>civicrm/tournament/email</path>
-		<page_callback>CRM_CiviTournament_Form_Email</page_callback>
-		<title>Address</title>
-		<access_arguments>access CiviCRM</access_arguments>
-	</item>
-	<item>
-		<path>civicrm/tournament/phone</path>
-		<page_callback>CRM_CiviTournament_Form_Phone</page_callback>
-		<title>Address</title>
-		<access_arguments>access CiviCRM</access_arguments>
-	</item>
-	<item>
-		<path>civicrm/tournament/genders</path>
-		<page_callback>CRM_CiviTournament_Form_Genders</page_callback>
-		<title>Genders</title>
-		<access_arguments>access CiviCRM</access_arguments>
-	</item>
-	<item>
-		<path>civicrm/tournament/account_request</path>
-		<page_callback>CRM_CiviTournament_Form_AccountRequest</page_callback>
-		<title>Account Request</title>
+		<path>civicrm/tournament/profile</path>
+		<page_callback>CRM_CiviTournament_Form_AccountProfile</page_callback>
+		<title>Account Profile</title>
 	</item>
 </menu>
