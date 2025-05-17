@@ -1,5 +1,5 @@
 <?php
-require_once("ITournamentRepository.php");
+require_once("CRM/CiviTournament/Repositories/ITournamentRepository.php");
 require_once("Settings/BillingOrganizationRelationshipType.php");
 
 class CiviApi4Repository implements ITournamentRepository
