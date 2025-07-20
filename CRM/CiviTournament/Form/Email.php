@@ -22,12 +22,12 @@ class CRM_CiviTournament_Form_Email extends CRM_CiviTournament_Form
 
     $entity = $this->getDefaultEntity();
 
-    $this->_fields = array(
-      new Field($entity, 'contact_id', 'contact_id', 'Hidden', TRUE),
-      new Field($entity, 'location_type_id', 'location_type_id', 'Hidden', TRUE),
-      new Field($entity, 'is_primary', 'Is primary?', 'Hidden', TRUE),
-      new Field($entity, 'is_billing', 'Is billing?', 'Hidden', TRUE),
-      new Field($entity, 'email', 'Email', 'Text', TRUE)
+    $this->_formElements = array(
+      new FormElement($entity, 'contact_id', 'contact_id', 'Hidden', TRUE),
+      new FormElement($entity, 'location_type_id', 'location_type_id', 'Hidden', TRUE),
+      new FormElement($entity, 'is_primary', 'Is primary?', 'Hidden', TRUE),
+      new FormElement($entity, 'is_billing', 'Is billing?', 'Hidden', TRUE),
+      new FormElement($entity, 'email', 'Email', 'Text', TRUE)
     );
   }
 
@@ -37,16 +37,10 @@ class CRM_CiviTournament_Form_Email extends CRM_CiviTournament_Form
   }
 
 
-  protected function initializeGetSingleRecordAction()
+  protected function initializeGetSingleRecordAction(int $id)
   {
     return Entity::get(TRUE)
-      ->addWhere('id', '=', $this->_id)
+      ->addWhere('id', '=', $id)
       ->setLimit(1);
-  }
-
-  public function preProcess()
-  {
-    parent::getId();
-    parent::preProcess();
   }
 }

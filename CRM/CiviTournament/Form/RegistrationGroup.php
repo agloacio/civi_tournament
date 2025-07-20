@@ -20,17 +20,11 @@ class CRM_CiviTournament_Form_RegistrationGroup extends CRM_CiviTournament_Form_
 
     $entity = $this->getDefaultEntity();
 
-    $this->_fields = array_merge(
-      $this->_fields,
+    $this->_formElements = array_merge(
+      $this->_formElements,
       array(
-        new Field($entity, 'organization_name', 'Name', 'Text', TRUE)
+        new FormElement($entity, 'organization_name', 'Name', 'Text', TRUE)
       )
     );
-  }
-
-  public function preProcess()
-  {
-    parent::getId();
-    parent::preProcess();
   }
 }

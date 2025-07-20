@@ -1,7 +1,9 @@
 <?php
-require_once "Form.php";
-require_once "Field.php";
-
+require_once("Form.php");
+require_once("Elements/TextFormElement.php");
+require_once("Elements/AddressFormElement.php");
+require_once("Elements/RegionFormElement.php");
+require_once("Services/ContactService.php");
 /**
  * Billing Organization Form controller class
  *
@@ -18,29 +20,31 @@ class CRM_CiviTournament_Form_Organization extends CRM_CiviTournament_Form_Conta
   {
     parent::__construct($state, $action, $method, $name);
 
-    $entity = $this->getDefaultEntity();
-
-    $this->_fields = array_merge(
-      $this->_fields,
+    $this->_formElements = array_merge(
+      $this->_formElements,
       array(
-        new Field($entity, 'organization_name', 'Name', 'Text', TRUE),
-        new Field($entity, 'email_primary.email', 'Email', 'Text', TRUE),
-        new Field($entity, 'phone_billing.phone', 'Main Phone', 'Text', TRUE),
-        new Field($entity, 'phone_primary.phone', 'On Site Phone', 'Text', TRUE, 'How can we reach you at the tournament?'),
-        new Field($entity, 'address_primary.street_address', 'Address', 'Text', TRUE),
-        new Field($entity, 'address_primary.supplemental_address_1', 'Address (cont.)', 'Text', FALSE),
-        new Field($entity, 'address_primary.city', 'City', 'Text', TRUE),
-        new Field($entity, 'address_primary.country_id', 'Country', CRM_CiviTournament_Form::COUNTRY_SELECT, FALSE),
-        new Field($entity, 'address_primary.state_province_id', 'State', CRM_CiviTournament_Form::STATE_PROVINCE_SELECT, TRUE),
-        new Field($entity, 'address_primary.postal_code', 'Postal Code', 'Text', TRUE),
-        new Field($entity, 'address_primary.postal_code_suffix', 'Postal Code Suffix', 'Text', FALSE),
+        new TextFormElement('name', 'Name', TRUE),
+        new TextFormElement('email', 'Email', TRUE),
+        new TextFormElement('mainPhone', 'Main Phone', TRUE),
+        new TextFormElement('mobilePhone', 'On Site Phone', TRUE, 'How can we reach you at the tournament?'),
+        new AddressFormElement('streetAddress', 'Address', TRUE),
+        new AddressFormElement('supplementalAddress', 'Address (cont.)', FALSE),
+        new AddressFormElement('city', 'City', TRUE),
+        //new TextFormElement('country', 'Country', CRM_CiviTournament_Form::COUNTRY_SELECT, FALSE),
+        new RegionFormElement('region', 'State', TRUE),
+        new AddressFormElement('postalCode', 'Postal Code', TRUE),
+        new AddressFormElement('postalCodeSuffix', 'Postal Code Suffix', FALSE),
       )
     );
   }
 
-  public function preProcess()
+  protected function getPersistedEntity(int $organizationId)
   {
-    parent::getId();
-    parent::preProcess();
+    return ContactService::GetOrganizationProfile($organizationId);
+  }
+
+  protected function saveValues($organizationProfile)
+  {
+    return ContactService::SaveOrganizationProfile($organizationProfile);
   }
 }

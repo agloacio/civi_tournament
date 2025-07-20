@@ -22,18 +22,18 @@ class CRM_CiviTournament_Form_Address extends CRM_CiviTournament_Form
 
     $entity = $this->getDefaultEntity();
 
-    $this->_fields = array(
-      new Field($entity, 'contact_id', 'contact_id', 'Hidden', TRUE),
-      new Field($entity, 'location_type_id', 'location_type_id', 'Hidden', TRUE),
-      new Field($entity, 'is_primary', 'Is primary?', 'Hidden', TRUE),
-      new Field($entity, 'is_billing', 'Is billing?', 'Hidden', TRUE),
-      new Field($entity, 'street_address', 'Address', 'Text', TRUE),
-      new Field($entity, 'supplemental_address_1', 'Address (cont.)', 'Text', FALSE),
-      new Field($entity, 'city', 'City', 'Text', TRUE),
-      new Field($entity, 'country_id', 'Country', CRM_CiviTournament_Form::COUNTRY_SELECT, FALSE),
-      new Field($entity, 'state_province_id', 'State', CRM_CiviTournament_Form::STATE_PROVINCE_SELECT, TRUE),
-      new Field($entity, 'postal_code', 'Postal Code', 'Text', TRUE),
-      new Field($entity, 'postal_code_suffix', 'Suffix', 'Text', FALSE)
+    $this->_formElements = array(
+      new FormElement($entity, 'contact_id', 'contact_id', 'Hidden', TRUE),
+      new FormElement($entity, 'location_type_id', 'location_type_id', 'Hidden', TRUE),
+      new FormElement($entity, 'is_primary', 'Is primary?', 'Hidden', TRUE),
+      new FormElement($entity, 'is_billing', 'Is billing?', 'Hidden', TRUE),
+      new FormElement($entity, 'street_address', 'Address', 'Text', TRUE),
+      new FormElement($entity, 'supplemental_address_1', 'Address (cont.)', 'Text', FALSE),
+      new FormElement($entity, 'city', 'City', 'Text', TRUE),
+      new FormElement($entity, 'country_id', 'Country', CRM_CiviTournament_Form::COUNTRY_SELECT, FALSE),
+      new FormElement($entity, 'state_province_id', 'State', CRM_CiviTournament_Form::STATE_PROVINCE_SELECT, TRUE),
+      new FormElement($entity, 'postal_code', 'Postal Code', 'Text', TRUE),
+      new FormElement($entity, 'postal_code_suffix', 'Suffix', 'Text', FALSE)
     );
   }
 
@@ -48,11 +48,5 @@ class CRM_CiviTournament_Form_Address extends CRM_CiviTournament_Form
     return Entity::get(TRUE)
       ->addWhere('id', '=', $this->_id)
       ->setLimit(1);
-  }
-
-  public function preProcess()
-  {
-    parent::getId();
-    parent::preProcess();
-  }
+  
 }
