@@ -1,5 +1,6 @@
 <?php
 require_once "Form.php";
+require_once("Elements/HiddenFormElement.php");
 
 use \Civi\Api4\Contact as Entity;
 
@@ -12,24 +13,10 @@ use \Civi\Api4\Contact as Entity;
  */
 class CRM_CiviTournament_Form_Contact extends CRM_CiviTournament_Form 
 {
-  public function __construct($state, $action, $method, $name)
-  {
-    parent::__construct($state, $action, $method, $name);
-
-    $entity = $this->getDefaultEntity();
-
-    $this->_fields = array(
-      new Field($entity, 'id', 'id', 'Hidden', FALSE)
-    );
-  }
-
-  protected function getId() {
-    $this->_id = $this->_id ?? $this->getSubmitValue("id") ?? CRM_Utils_Request::retrieve('cid', 'Positive');
-  }
-
   public function postProcess() {
-    $this->_values = $this->exportValues();
-    $this->_updateAction = Entity::update(FALSE)->addWhere('id', '=', $this->_values["id"]);
+    $this->values = $this->exportValues();
+    $this->setEntityLabel();
+    $this->updateAction = Entity::update(FALSE)->addWhere('id', '=', $this->values["id"]);
     parent::postProcess();
   }
 
@@ -38,16 +25,16 @@ class CRM_CiviTournament_Form_Contact extends CRM_CiviTournament_Form
     return 'contact';
   }
 
-  protected function initializeGetSingleRecordAction()
+  protected function initializeGetSingleRecordAction(int $id)
   {
-    return Entity::get(TRUE)
-      ->addSelect("display_name", "sort_name")
-      ->addWhere('id', '=', $this->_id)
-      ->setLimit(1);
+    return entity::get(true)
+      ->addselect("display_name", "sort_name")
+      ->addwhere('id', '=', $id)
+      ->setlimit(1);
   }
 
-  protected function setRecordName()
+  protected function setEntityLabel()
   {
-    $this->_recordName = $this->_values['display_name'];
+    $this->entityLabel = $this->values['name'];
   }
 }

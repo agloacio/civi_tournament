@@ -56,13 +56,17 @@ function civi_tournament_civicrm_navigationMenu(&$menu)
     'operator' => 'OR',
     'separator' => 0
   ));
+}
 
-  _civi_tournament_civix_insert_navigation_menu($menu, 'tournament', array(
-    'label' => E::ts('Person'),
-    'name' => 'person',
-    'url' => 'civicrm/tournament/person',
-    'permission' => 'access CiviCRM',
-    'operator' => 'OR',
-    'separator' => 0,
-  ));
+spl_autoload_register('_civi_tournament_class_loader');
+
+function _civi_tournament_class_loader($class)
+{
+  if (str_contains($class, E::CLASS_PREFIX)){
+    $directory = str_replace('_', '/', $class);
+    $fileNameRoot = str_replace(E::CLASS_PREFIX . '_', '', $class);
+    $fileName = "$fileNameRoot.php";
+    $path = "$directory/$fileName";
+    require_once($path);
+  }
 }

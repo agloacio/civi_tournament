@@ -8,14 +8,19 @@
   </item>
 	<item>
 		<path>civicrm/tournament/person</path>
-		<page_callback>CRM_CiviTournament_Form_Person</page_callback>
-		<title>Person</title>
+		<page_callback>CRM_CiviTournament_Form_PersonProfile</page_callback>
+		<title>Person Profile</title>
 		<access_arguments>access CiviCRM</access_arguments>
 	</item>
 	<item>
-		<path>civicrm/tournament/billing_organization</path>
-		<page_callback>CRM_CiviTournament_Form_BillingOrganization</page_callback>
-		<title>Billing Organization</title>
+		<path>civicrm/tournament/organization</path>
+		<page_callback>CRM_CiviTournament_Form_Organization</page_callback>
+		<title>Organization</title>
 		<access_arguments>access CiviCRM</access_arguments>
+	</item>
+	<item>
+		<path>civicrm/tournament/profile</path>
+		<page_callback>CRM_CiviTournament_Form_AccountProfile</page_callback>
+		<title>Account Profile</title>
 	</item>
 </menu>
