@@ -34,8 +34,8 @@ class CRM_CiviTournament_Form_ContactProfile extends CRM_CiviTournament_Form
       new AddressFormElement('postalCode', 'Postal Code', FormElement::REQUIRED),
       new AddressFormElement('postalCodeSuffix', 'Postal Code Suffix', FormElement::OPTIONAL),
     ));
-    $this->_formElements = $formElements;
 
+    $this->_formElements = $formElements;
   }
 
   protected function getPersistedEntity(int $contactId)
@@ -45,9 +45,14 @@ class CRM_CiviTournament_Form_ContactProfile extends CRM_CiviTournament_Form
 
   protected function getValuesForUpdate(): array
   {
-    $values = parent::getValuesForUpdate();;
+    $values = parent::getValuesForUpdate();
+
+    $values["emailId"] = $this->_entity->email?->id;
     $values["email"] = $this->_entity->email?->email;
+
+    $values["mainPhoneId"] = $this->_entity->mainPhone?->id;
     $values["mainPhone"] = $this->_entity->mainPhone?->phone;
+
     $values["extension"] = $this->_entity->mainPhone?->extension;
     $values["onsitePhone"] = $this->_entity->mainPhone?->phone;
     $values["streetAddress"] = $this->_entity->address?->streetAddress;

@@ -44,12 +44,14 @@ class CiviApi4Repository implements IContactRepository
       $contactProfile['contact_id'] = $contactSaveResult->first()['id'];
 
       $emailData = $contactProfile;
+      $emailData['id'] = $contactProfile["email_primary.id"];
       $emailData['email'] = $contactProfile["email_primary.email"];
       $emailData['is_primary'] = TRUE;
       $emailData['location_type_id'] = 3; // TODO
       $results['primary_email'] = self::SaveEmail($emailData);
 
       $mainPhoneData = $contactProfile;
+      $mainPhoneData['id'] = $contactProfile['phone_billing.id'];
       $mainPhoneData['is_primary'] = TRUE;
       $mainPhoneData['location_type_id'] = 3;
       $mainPhoneData['is_billing'] = TRUE;
@@ -58,6 +60,7 @@ class CiviApi4Repository implements IContactRepository
       $results['phone_billing'] = self::SavePhone($mainPhoneData);
 
       $mobilePhoneData = $contactProfile;
+      $mobilePhoneData['id'] = $contactProfile['phone_primary.id'];
       $mobilePhoneData['is_primary'] = FALSE;
       $mobilePhoneData['location_type_id'] = 4;
       $mobilePhoneData['is_billing'] = FALSE;
@@ -234,25 +237,30 @@ class CiviApi4Repository implements IContactRepository
 
   public static function SaveEmail(array $emailData)
   {
-    $results = Email::update(TRUE)
+    $results = Email::save()
+      ->addRecord($emailData) // <--- THIS IS THE CORRECT METHOD for single records in the chain
+      ->execute();
+
+    $results = Email::save()
+      ->addValue('id', '=', $emailData['id'])
       ->addValue('is_primary', $emailData['is_primary'])
       ->addValue('location_type_id', $emailData['location_type_id'])
       ->addValue('email', $emailData['email'])
-      ->addWhere('contact_id', '=', $emailData['contact_id'])
+      ->addValue('contact_id', $emailData['contact_id'])
       ->execute();
     return $results->getArrayCopy();
   }
 
   public static function SavePhone(array $phoneData)
   {
-    $results = Phone::update(TRUE)
-      ->addValue('is_primary', $phoneData['is_primary'])
-      ->addValue('is_billing', $phoneData['is_billing'])
-      ->addValue('location_type_id', $phoneData['location_type_id'])
-      ->addValue('phone_type_id', $phoneData['phone_type_id'])
-      ->addValue('phone', $phoneData['phone'])
-      ->addWhere('contact_id', '=', $phoneData['contact_id'])
-      ->execute();
+    $results = Phone::save()
+      ->addWhere('id', '=', $phoneData['id'])
+      ->addValue('contact_id', $phoneData['contact_id'])
+    ->addValue('phone', $phoneData['phone'])
+    ->addValue('phone_type_id', $phoneData['phone_type_id']) 
+    ->addValue('location_type_id', $phoneData['location_type_id']) 
+    ->addValue('is_primary', $phoneData['is_primary'])
+    ->execute();
     return $results->getArrayCopy();
   }
 
