@@ -13,6 +13,6 @@ class HiddenFormElement extends FormElement
 {
   public function __construct($name)
   {
-    parent::__construct('Hidden', $name, $name, self::REQUIRED);
+    parent::__construct('Hidden', $name, $name, FormElement::REQUIRED);
   }
 }

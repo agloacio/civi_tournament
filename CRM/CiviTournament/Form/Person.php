@@ -25,13 +25,13 @@ class CRM_CiviTournament_Form_Person extends CRM_CiviTournament_Form_Contact
     $this->_formElements = array_merge(
       $this->_formElements,
       array(
-        new TextFormElement('lastName', 'Last Name',  self::REQUIRED),
-        new TextFormElement('firstName', 'First Name',  self::REQUIRED),
-        new TextFormElement('middleName', 'Middle Name', self::OPTIONAL),
-        new GenderFormElement('gender', 'Gender',  self:: OPTIONAL),
-        new DateTimeFormElement('birthDate', 'Birth Date',  self::OPTIONAL),        
-        new SalutationFormElement('salutation', 'Salutation', self::OPTIONAL),
-        new GenerationFormElement('generation', 'Generation', self::OPTIONAL)
+        new TextFormElement('lastName', 'Last Name',  FormElement::REQUIRED),
+        new TextFormElement('firstName', 'First Name',  FormElement::REQUIRED),
+        new TextFormElement('middleName', 'Middle Name', FormElement::OPTIONAL),
+        new GenderFormElement('gender', 'Gender', FormElement::OPTIONAL),
+        new DateTimeFormElement('birthDate', 'Birth Date', FormElement::OPTIONAL),        
+        new SalutationFormElement('salutation', 'Salutation', FormElement::OPTIONAL),
+        new GenerationFormElement('generation', 'Generation', FormElement::OPTIONAL)
       )
     );
   }
