@@ -182,6 +182,7 @@ class CivicrmTournamentMapper implements ITournamentMapper
 
     $civicrmContact["phone_primary.phone"] = $contactProfile["mobilePhone"];
     $civicrmContact["phone_billing.phone"] = $contactProfile["mainPhone"];
+    $civicrmContact["phone_billing.phone_ext"] = $contactProfile["extension"];
 
     return $civicrmContact;
   }

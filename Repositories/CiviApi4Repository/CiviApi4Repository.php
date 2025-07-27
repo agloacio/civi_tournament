@@ -64,6 +64,7 @@ class CiviApi4Repository implements IContactRepository
         'is_primary' => TRUE,
         'is_billing' => TRUE,
         'phone' => $contactProfile['phone_billing.phone'],
+        'phone_ext' => $contactProfile['phone_billing.phone_ext'],
         'phone_type_id' => $mainPhoneType
       ];
 
