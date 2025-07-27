@@ -33,7 +33,7 @@ class CiviApi4Repository implements IContactRepository
     $transaction = new CRM_Core_Transaction(); // Start transaction for atomicity
 
     try {
-      $contactSaveResult = Contact::save(FALSE)
+      $contactSaveResult = Contact::save(TRUE)
         ->addRecord([
           'id' => $contactProfile["id"],
           'display_name' => $contactProfile["name"]
@@ -45,36 +45,39 @@ class CiviApi4Repository implements IContactRepository
 
       $mainPhoneType = 1;  // TODO 
       $modbilePhoneType = 2;  // TODO 
+      $billingLocationType = 1;  // TODO 
       $mainLocationType = 3;  // TODO 
-      $matchData = ['contact_id', 'location_type_id'];
+      $propertiesToMatch = ['contact_id', 'location_type_id'];
 
-      $emailData = array();
-      $emailData['contact_id'] = $contactId;
-      $emailData['location_type_id'] = $mainLocationType; 
-      $emailData['is_primary'] = TRUE;
-      $emailData['email'] = $contactProfile["email_primary.email"];
-      $results['primary_email'] = self::SaveEmail($emailData);
+      $emailRecords = [
+        'contact_id' => $contactId,
+        'location_type_id' => $billingLocationType,
+        'is_primary' => TRUE,
+        'email' => $contactProfile['email_primary.email']
+      ];
+      $results['primary_email'] = self::SaveEmail($emailRecords, $propertiesToMatch);
 
-      $mainPhoneData = array();
-      $mainPhoneData['contact_id'] = $contactId;
-      $mainPhoneData['location_type_id'] = $mainLocationType;
-      $mainPhoneData['is_billing'] = TRUE;
-      $mainPhoneData['is_primary'] = TRUE;
-      $mainPhoneData['phone'] = $contactProfile['phone_billing.phone'];
-      $mainPhoneData['phone_type_id'] = $mainPhoneType;
+      $billingPhoneRecords = [
+        'contact_id' => $contactId,
+        'location_type_id' => $billingLocationType,
+        'is_primary' => TRUE,
+        'is_billing' => TRUE,
+        'phone' => $contactProfile['phone_billing.phone'],
+        'phone_type_id' => $mainPhoneType
+      ];
 
-      $results['phone_billing'] = self::SavePhone($mainPhoneData, $matchData);
+      $results['phone_billing'] = self::SavePhone($billingPhoneRecords, $propertiesToMatch);
 
-      $mobilePhoneData = [
+      $mobilePhoneRecords = [
           'contact_id' => $contactId,
-          'location_type_id' => $mainLocationType, 
+          'location_type_id' => $billingLocationType, 
           'is_primary' => TRUE,
           'is_billing' => FALSE,
           'phone' => $contactProfile['phone_primary.phone'],
-          'phone_type_id' => $modbilePhoneType, // TODO Mobile
+          'phone_type_id' => $modbilePhoneType
         ];
 
-      $results['phone_primary'] = self::SavePhone($mobilePhoneData, $matchData);
+      $results['phone_primary'] = self::SavePhone($mobilePhoneRecords, $propertiesToMatch);
 
       $addressData = array();
       $addressData['contact_id'] = $contactId;
@@ -244,27 +247,29 @@ class CiviApi4Repository implements IContactRepository
     }
   }
 
-  public static function SaveEmail(array $emailData)
+  public static function SaveEmail(array $records, array $match)
   {
-    $results = Email::save()
-      ->addRecord($emailData)
+    $results = Email::save(TRUE)
+      ->addRecord($records)
+      ->setMatch($match)
       ->execute();
     return $results->getArrayCopy();
   }
 
-  public static function SavePhone(array $phoneData, array $matchData)
+  public static function SavePhone(array $records, array $match)
   {
     $results = Phone::save(TRUE)
-      ->addRecord($phoneData)
-      ->setMatch($matchData)
+      ->addRecord($records)
+      ->setMatch($match)
       ->execute();
     return $results->getArrayCopy();
   }
 
-  public static function SaveAddress(array $addressData)
+  public static function SaveAddress(array $records, array $match)
   {
     $results = Address::save(TRUE)
-      ->addRecord($addressData)
+      ->addRecord($records)
+      ->setMatch($match)
       ->execute();
     return $results->getArrayCopy();
   }
