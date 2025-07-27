@@ -41,36 +41,45 @@ class CiviApi4Repository implements IContactRepository
         ->execute();
       $results['contact'] = $contactSaveResult->getArrayCopy();
 
-      $contactProfile['contact_id'] = $contactSaveResult->first()['id'];
+      $contactId = $contactSaveResult->first()['id'];
 
-      $emailData = $contactProfile;
-      $emailData['id'] = $contactProfile["email_primary.id"];
-      $emailData['email'] = $contactProfile["email_primary.email"];
+      $mainPhoneType = 1;  // TODO 
+      $modbilePhoneType = 2;  // TODO 
+      $mainLocationType = 3;  // TODO 
+      $matchData = ['contact_id', 'location_type_id'];
+
+      $emailData = array();
+      $emailData['contact_id'] = $contactId;
+      $emailData['location_type_id'] = $mainLocationType; 
       $emailData['is_primary'] = TRUE;
-      $emailData['location_type_id'] = 3; // TODO
+      $emailData['email'] = $contactProfile["email_primary.email"];
       $results['primary_email'] = self::SaveEmail($emailData);
 
-      $mainPhoneData = $contactProfile;
-      $mainPhoneData['id'] = $contactProfile['phone_billing.id'];
-      $mainPhoneData['is_primary'] = TRUE;
-      $mainPhoneData['location_type_id'] = 3;
+      $mainPhoneData = array();
+      $mainPhoneData['contact_id'] = $contactId;
+      $mainPhoneData['location_type_id'] = $mainLocationType;
       $mainPhoneData['is_billing'] = TRUE;
+      $mainPhoneData['is_primary'] = TRUE;
       $mainPhoneData['phone'] = $contactProfile['phone_billing.phone'];
-      $mainPhoneData['phone_type_id'] = 1;
-      $results['phone_billing'] = self::SavePhone($mainPhoneData);
+      $mainPhoneData['phone_type_id'] = $mainPhoneType;
 
-      $mobilePhoneData = $contactProfile;
-      $mobilePhoneData['id'] = $contactProfile['phone_primary.id'];
-      $mobilePhoneData['is_primary'] = FALSE;
-      $mobilePhoneData['location_type_id'] = 4;
-      $mobilePhoneData['is_billing'] = FALSE;
-      $mobilePhoneData['phone'] = $contactProfile['phone_primary.phone'];
-      $mobilePhoneData['phone_type_id'] = 2;
-      $results['phone_primary'] = self::SavePhone($mobilePhoneData);
+      $results['phone_billing'] = self::SavePhone($mainPhoneData, $matchData);
 
-      $addressData = $contactProfile;
+      $mobilePhoneData = [
+          'contact_id' => $contactId,
+          'location_type_id' => $mainLocationType, 
+          'is_primary' => TRUE,
+          'is_billing' => FALSE,
+          'phone' => $contactProfile['phone_primary.phone'],
+          'phone_type_id' => $modbilePhoneType, // TODO Mobile
+        ];
+
+      $results['phone_primary'] = self::SavePhone($mobilePhoneData, $matchData);
+
+      $addressData = array();
+      $addressData['contact_id'] = $contactId;
       $addressData['is_primary'] = TRUE;
-      $addressData['location_type_id'] = 3;
+      $addressData['location_type_id'] = $mainLocationType;
       $addressData['is_billing'] = TRUE;
 
       $addressData["street_address"] = $contactProfile['address_primary.street_address'];
@@ -238,44 +247,24 @@ class CiviApi4Repository implements IContactRepository
   public static function SaveEmail(array $emailData)
   {
     $results = Email::save()
-      ->addRecord($emailData) // <--- THIS IS THE CORRECT METHOD for single records in the chain
-      ->execute();
-
-    $results = Email::save()
-      ->addValue('id', '=', $emailData['id'])
-      ->addValue('is_primary', $emailData['is_primary'])
-      ->addValue('location_type_id', $emailData['location_type_id'])
-      ->addValue('email', $emailData['email'])
-      ->addValue('contact_id', $emailData['contact_id'])
+      ->addRecord($emailData)
       ->execute();
     return $results->getArrayCopy();
   }
 
-  public static function SavePhone(array $phoneData)
+  public static function SavePhone(array $phoneData, array $matchData)
   {
-    $results = Phone::save()
-      ->addWhere('id', '=', $phoneData['id'])
-      ->addValue('contact_id', $phoneData['contact_id'])
-    ->addValue('phone', $phoneData['phone'])
-    ->addValue('phone_type_id', $phoneData['phone_type_id']) 
-    ->addValue('location_type_id', $phoneData['location_type_id']) 
-    ->addValue('is_primary', $phoneData['is_primary'])
-    ->execute();
+    $results = Phone::save(TRUE)
+      ->addRecord($phoneData)
+      ->setMatch($matchData)
+      ->execute();
     return $results->getArrayCopy();
   }
 
   public static function SaveAddress(array $addressData)
   {
-    $results = Address::update(TRUE)
-      ->addValue('is_primary', $addressData['is_primary'])
-      ->addValue('is_billing', $addressData['is_billing'])
-      ->addValue('location_type_id', $addressData['location_type_id'])
-      ->addValue('street_address', $addressData['street_address'])
-      ->addValue('city', $addressData['city'])
-      ->addValue('state_province_id', $addressData['state_province_id'])
-      ->addValue('postal_code', $addressData['postal_code'])
-      ->addValue('postal_code_suffix', $addressData['postal_code_suffix'])
-      ->addWhere('contact_id', '=', $addressData['contact_id'])
+    $results = Address::save(TRUE)
+      ->addRecord($addressData)
       ->execute();
     return $results->getArrayCopy();
   }

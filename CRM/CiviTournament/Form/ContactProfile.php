@@ -47,14 +47,12 @@ class CRM_CiviTournament_Form_ContactProfile extends CRM_CiviTournament_Form
   {
     $values = parent::getValuesForUpdate();
 
-    $values["emailId"] = $this->_entity->email?->id;
     $values["email"] = $this->_entity->email?->email;
 
-    $values["mainPhoneId"] = $this->_entity->mainPhone?->id;
     $values["mainPhone"] = $this->_entity->mainPhone?->phone;
 
     $values["extension"] = $this->_entity->mainPhone?->extension;
-    $values["onsitePhone"] = $this->_entity->mainPhone?->phone;
+    $values["onsitePhone"] = $this->_entity->mobilePhone?->phone;
     $values["streetAddress"] = $this->_entity->address?->streetAddress;
     $values["supplementalAddress"] = $this->_entity->address?->streetAddress1;
     $values["city"] = $this->_entity->address?->city;
