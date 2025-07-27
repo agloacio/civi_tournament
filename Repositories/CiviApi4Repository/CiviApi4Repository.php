@@ -48,6 +48,7 @@ class CiviApi4Repository implements IContactRepository
       $billingLocationType = 1;  // TODO 
       $mainLocationType = 3;  // TODO 
       $propertiesToMatch = ['contact_id', 'location_type_id'];
+      $phonePropertiesToMatch = array_merge($propertiesToMatch, ["phone_type_id"]);
 
       $emailRecords = [
         'contact_id' => $contactId,
@@ -66,7 +67,7 @@ class CiviApi4Repository implements IContactRepository
         'phone_type_id' => $mainPhoneType
       ];
 
-      $results['phone_billing'] = self::SavePhone($billingPhoneRecords, $propertiesToMatch);
+      $results['phone_billing'] = self::SavePhone($billingPhoneRecords, $phonePropertiesToMatch);
 
       $mobilePhoneRecords = [
           'contact_id' => $contactId,
@@ -77,22 +78,22 @@ class CiviApi4Repository implements IContactRepository
           'phone_type_id' => $modbilePhoneType
         ];
 
-      $results['phone_primary'] = self::SavePhone($mobilePhoneRecords, $propertiesToMatch);
+      $results['phone_primary'] = self::SavePhone($mobilePhoneRecords, $phonePropertiesToMatch);
 
-      $addressData = array();
-      $addressData['contact_id'] = $contactId;
-      $addressData['is_primary'] = TRUE;
-      $addressData['location_type_id'] = $mainLocationType;
-      $addressData['is_billing'] = TRUE;
+      $addressRecords = [
+        'contact_id' => $contactId,
+        'location_type_id' => $billingLocationType,
+        'is_primary' => TRUE,
+        'is_billing' => TRUE,
+        'street_address' => $contactProfile['address_primary.street_address'],
+        'supplemental_address_1' => $contactProfile['address_primary.supplementalAddress'],
+        'city'=> $contactProfile['address_primary.city'],
+        'state_province_id'=> $contactProfile['address_primary.state_province'],
+        'postal_code'=> $contactProfile['address_primary.postal_code'],
+        'postal_code_suffix'=> $contactProfile['address_primary.postal_code_suffix'],
+      ];
 
-      $addressData["street_address"] = $contactProfile['address_primary.street_address'];
-      $addressData["supplemental_address_1"] = $contactProfile['address_primary.supplementalAddress'];
-      $addressData["city"] = $contactProfile['address_primary.city'];
-      $addressData["state_province_id"] = $contactProfile['address_primary.state_province'];
-      $addressData["postal_code"] = $contactProfile['address_primary.postal_code'];
-      $addressData["postal_code_suffix"] = $contactProfile['address_primary.postal_code_suffix'];
-
-      $results['primary_address'] = self::SaveAddress($addressData);
+      $results['primary_address'] = self::SaveAddress($addressRecords, $propertiesToMatch);
 
       $transaction->commit();
       return $results;
