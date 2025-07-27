@@ -31,8 +31,7 @@ class CRM_CiviTournament_Form_ContactProfile extends CRM_CiviTournament_Form
       new AddressFormElement('supplementalAddress', 'Address (cont.)', FormElement::OPTIONAL),
       new AddressFormElement('city', 'City', FormElement::REQUIRED),
       new RegionFormElement('region', 'State', FormElement::REQUIRED),
-      new AddressFormElement('postalCode', 'Postal Code', FormElement::REQUIRED),
-      new AddressFormElement('postalCodeSuffix', 'Postal Code Suffix', FormElement::OPTIONAL),
+      new AddressFormElement('postalCode', 'Postal Code', FormElement::REQUIRED)
     ));
 
     $this->_formElements = $formElements;
@@ -58,7 +57,6 @@ class CRM_CiviTournament_Form_ContactProfile extends CRM_CiviTournament_Form
     $values["city"] = $this->_entity->address?->city;
     $values["region"] = $this->_entity->address?->region;
     $values["postalCode"] = $this->_entity->address?->postalCode;
-    $values["postalCodeSuffix"] = $this->_entity->address?->postalCodeSuffix;
     return $values;
   }
 

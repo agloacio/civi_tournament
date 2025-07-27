@@ -110,7 +110,7 @@ class CiviApi4Repository implements IContactRepository
       , "gender_id:name", "gender_id:label"
       , "prefix_id:name", "prefix_id:label"
       , "suffix_id:name", "suffix_id:label"
-      , 'email_primary.*', 'phone_primary.*', 'phone_billing.*', 'address_primary.*')
+      , 'email_primary.*', 'phone_primary.*', 'phone_billing.*', 'address_primary.*', 'address_primary.state_province_id:abbr', 'address_primary.state_province_id:label')
       ->addWhere('id', '=', $personId);
     $result = $getAction->execute();
     return self::ToArray($result);

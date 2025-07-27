@@ -85,7 +85,7 @@ class CivicrmTournamentMapper implements ITournamentMapper
     $emailAddress = $civicrmPersonProfile["email_primary.email"] ?? null;
     if ($emailAddress) $emailAddress = self::BuildEmailAddress($civicrmPersonProfile);
 
-    $address = $civicrmPersonProfile["address_primary.address"] ?? null;
+    $address = $civicrmPersonProfile["address_primary.street_address"] ?? null;
     if ($address) $address = self::BuildAddress($civicrmPersonProfile);
 
     $mainPhone = $civicrmPersonProfile["phone_billing.phone"] ?? null;

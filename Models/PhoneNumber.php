@@ -27,9 +27,9 @@ class PhoneNumber extends Entity
     {
         $phoneNumber = self::normalize($phoneNumber); // Normalize the number before validation and storage
 
-        if (!self::isValid($phoneNumber)) {
-            throw new InvalidArgumentException("Invalid phone number format: '{$phoneNumber}'");
-        }
+        //if (!self::isValid($phoneNumber)) {
+        //    throw new InvalidArgumentException("Invalid phone number format: '{$phoneNumber}'");
+        //}
 
         $this->_phoneNumber = $phoneNumber;
         parent::__construct($id, $phoneNumber);

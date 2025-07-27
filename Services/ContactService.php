@@ -39,8 +39,8 @@ class ContactService
   public static function GetPersonProfile($personId): PersonProfile
   {
     $personArray = ContactRepository::GetPersonProfile($personId);
-    $contactProfile = Mapper::BuildPersonProfile($personArray[0]);
-    return $contactProfile;
+    $personProfile = Mapper::BuildPersonProfile($personArray[0]);
+    return $personProfile;
   }
 
   public static function SaveOrganizationProfile($organizationProfile)

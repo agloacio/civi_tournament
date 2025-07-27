@@ -43,6 +43,6 @@ abstract class Entity
   // The magic __toString() method
   public function __toString() : string
   {
-    return $this->_label ??  $this->_name;
+    return $this->_label ??  $this->_name ?? "";
   }
 }
