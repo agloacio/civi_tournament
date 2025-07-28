@@ -15,6 +15,7 @@ class PhoneNumber extends Entity
   private ?string $_areaCode;
   private ?string $_exchange;
   private ?string $_localNumber;
+  private ?string $_extension;
 
     /**
      * Constructor for PhoneNumber.
@@ -35,6 +36,25 @@ class PhoneNumber extends Entity
         parent::__construct($id, $phoneNumber);
     }
 
+  public function __get($name)
+  {
+    if ($name === 'phoneNumber') {
+      return $this->_phoneNumber;
+    }
+    if ($name === 'areaCode') {
+      return $this->_areaCode;
+    }
+    if ($name === 'exchange') {
+      return $this->_exchange;
+    }
+    if ($name === 'localNumber') {
+      return $this->_localNumber;
+    }
+    if ($name === 'extension') {
+      return $this->_extension;
+    }
+    return parent::__get($name);;
+  }
     /**
      * Validates a phone number using a basic regular expression.
      * This regex allows for common phone number characters and formats (digits, spaces, hyphens,

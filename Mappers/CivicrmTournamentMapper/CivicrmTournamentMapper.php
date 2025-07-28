@@ -180,7 +180,7 @@ class CivicrmTournamentMapper implements ITournamentMapper
     $civicrmContact["address_primary.postal_code"] = $contactProfile["postalCode"];
     $civicrmContact["address_primary.postal_code_suffix"] = $contactProfile["postalCodeSuffix"];
 
-    $civicrmContact["phone_primary.phone"] = $contactProfile["mobilePhone"];
+    $civicrmContact["phone_primary.phone"] = $contactProfile["onsitePhone"];
     $civicrmContact["phone_billing.phone"] = $contactProfile["mainPhone"];
     $civicrmContact["phone_billing.phone_ext"] = $contactProfile["extension"];
 

@@ -24,7 +24,6 @@ class CRM_CiviTournament_Form_ContactProfile extends CRM_CiviTournament_Form
       new TextFormElement('email', 'Email', FormElement::REQUIRED),
 
       new TextFormElement('mainPhone', 'Main Phone', FormElement::REQUIRED),
-      new TextFormElement('extension', 'Extension', FormElement::OPTIONAL),
       new TextFormElement('onsitePhone', 'On Site Phone', FormElement::REQUIRED, 'How can we reach you at the tournament?'),
 
       new AddressFormElement('streetAddress', 'Address', FormElement::REQUIRED),
@@ -46,17 +45,15 @@ class CRM_CiviTournament_Form_ContactProfile extends CRM_CiviTournament_Form
   {
     $values = parent::getValuesForUpdate();
 
-    $values["email"] = $this->_entity->email?->email;
+    $values["email"] = $this->entity->email?->email;
 
-    $values["mainPhone"] = $this->_entity->mainPhone?->phone;
-
-    $values["extension"] = $this->_entity->mainPhone?->extension;
-    $values["onsitePhone"] = $this->_entity->mobilePhone?->phone;
-    $values["streetAddress"] = $this->_entity->address?->streetAddress;
-    $values["supplementalAddress"] = $this->_entity->address?->streetAddress1;
-    $values["city"] = $this->_entity->address?->city;
-    $values["region"] = $this->_entity->address?->region;
-    $values["postalCode"] = $this->_entity->address?->postalCode;
+    $values["mainPhone"] = $this->entity->mainPhone?->phoneNumber;
+    $values["onsitePhone"] = $this->entity->mobilePhone?->phoneNumber;
+    $values["streetAddress"] = $this->entity->address?->streetAddress;
+    $values["supplementalAddress"] = $this->entity->address?->streetAddress1;
+    $values["city"] = $this->entity->address?->city;
+    $values["region"] = $this->entity->address?->region->id;
+    $values["postalCode"] = $this->entity->address?->postalCode;
     return $values;
   }
 
